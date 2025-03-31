@@ -3,276 +3,417 @@ import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
   TextEditingController searchController = TextEditingController();
+
+  // Color palette
+  final Color primaryColor = Color(0xFF009085);
+  final Color secondaryColor = Color(0xFF2F4858);
+  final Color accentColor = Color(0xFFF6C445);
+  final Color darkAccent = Color(0xFF006B7C);
+  final Color lightAccent = Color(0xFFFDD90D);
   var data = [
     {"img": "image 50.png", "text": "Lights, Diyas \n & Candles"},
     {"img": "image 51.png", "text": "Diwali \n Gifts"},
     {"img": "image 52.png", "text": "Appliances  \n & Gadgets"},
     {"img": "image 53.png", "text": "Home \n & Living"}
   ];
-  var categroy = [
-    {"img": "image 54.png", "text": "Golden Glass\n Wooden Lid Candle (Oudh)"},
-    {"img": "image 57.png", "text": "Royal Gulab Jamun\n By Bikano"},
-    {"img": "image 63.png", "text": "Golden Glass\n Wooden Lid Candle (Oudh)"},
+  var category = [
+    {"img": "image 54.png", "text": "Golden Glass\n Wooden Lid Candle (Oudh)", "price": "₹79", "time": "8 MINS"},
+    {"img": "image 57.png", "text": "Royal Gulab Jamun\n By Bikano", "price": "₹129", "time": "10 MINS"},
+    {"img": "image 63.png", "text": "Premium Dry Fruits\n Pack", "price": "₹349", "time": "15 MINS"},
   ];
   var grocerykitchen = [
-    {"img": "image 41.png", "text": "Vegetables & \nFruits"},
-    {"img": "image 42.png", "text": "Atta, Dal & \nRice"},
-    {"img": "image 43.png", "text": "Oil, Ghee & \nMasala"},
-    {"img": "image 44 (1).png", "text": "Dairy, Bread & \nMilk"},
-    {"img": "image 45 (1).png", "text": "Biscuits & \nBakery"}
+    {"img": "image 41.png", "text": "Vegetables & \nFruits", "color": Color(0xFFF6C445)},
+    {"img": "image 42.png", "text": "Atta, Dal & \nRice", "color": Color(0xFF009085)},
+    {"img": "image 43.png", "text": "Oil, Ghee & \nMasala", "color": Color(0xFF2F4858)},
+    {"img": "image 44.png", "text": "Dairy, Bread & \nMilk", "color": Color(0xFF006B7C)},
+    {"img": "image 45.png", "text": "Biscuits & \nBakery", "color": Color(0xFFFDD90D)}
   ];
+
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-        body: Column(
-      children: [
-        SizedBox(
-          height: 40,
-        ),
-        Stack(
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Column(
           children: [
+            // Header Section
+            // Header Section (corrected)
             Container(
-              height: 190,
+              height: 220,  // Increased height to accommodate all elements
               width: double.infinity,
-              color: Color(0XFFEC0505),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 20,
-                      ),
-                      UiHelper.CustomText(
-                          text: "Blinkit in",
-                          color: Color(0XFFFFFFFF),
-                          fontweight: FontWeight.bold,
-                          fontsize: 15,
-                          fontfamily: "bold"),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 20,
-                      ),
-                      UiHelper.CustomText(
-                          text: "16 minutes",
-                          color: Color(0XFFFFFFFF),
-                          fontweight: FontWeight.bold,
-                          fontsize: 20,
-                          fontfamily: "bold")
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 20,
-                      ),
-                      UiHelper.CustomText(
-                          text: "HOME ",
-                          color: Color(0XFFFFFFFF),
-                          fontweight: FontWeight.bold,
-                          fontsize: 14),
-                      UiHelper.CustomText(
-                          text: "- Sujal Dave, Ratanada, Jodhpur (Raj)",
-                          color: Color(0XFFFFFFFF),
-                          fontweight: FontWeight.bold,
-                          fontsize: 14)
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              right: 20,
-              bottom: 100,
-              child: CircleAvatar(
-                radius: 15,
-                backgroundColor: Colors.black,
-                child: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                  size: 20,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFF009085), Color(0xFF006B7C)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
               ),
-            ),
-            Positioned(
-                bottom: 30,
-                left: 20,
-                child: UiHelper.CustomTextField(controller: searchController))
-          ],
-        ),
-        Container(
-          height: 1,
-          width: double.infinity,
-          color: Colors.white,
-        ),
-        Container(
-          height: 196,
-          width: double.infinity,
-          color: Color(0XFFEC0505),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              padding: EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  UiHelper.CustomImage(img: "image 60.png"),
-                  UiHelper.CustomImage(img: "image 55.png"),
-                  UiHelper.CustomText(
-                      text: "Mega Diwali Sale",
+                  // Header Row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "SKLY Flash",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                      CircleAvatar(
+                        radius: 18,
+                        backgroundColor: lightAccent,
+                        child: Icon(
+                          Icons.person,
+                          color: secondaryColor,
+                          size: 20,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(height: 8),  // Spacing between header and delivery text
+
+                  // Delivery Text
+                  Text(
+                    "8 minutes delivery",
+                    style: TextStyle(
                       color: Colors.white,
-                      fontweight: FontWeight.bold,
-                      fontsize: 20,
-                      fontfamily: "bold"),
-                  UiHelper.CustomImage(img: "image 55.png"),
-                  UiHelper.CustomImage(img: "image 61.png")
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
+                    ),
+                  ),
+
+                  SizedBox(height: 16),  // Spacing between delivery text and location
+
+                  // Location Row
+                  Row(
+                    children: [
+                      Icon(Icons.location_on, color: lightAccent, size: 16),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          "HOME - Sujal Dave, Ratanada, Jodhpur (Raj)",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  Spacer(),  // Pushes search bar to bottom
+
+                  // Search Bar
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                      BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 8,
+                      offset: Offset(0, 2),
+                      ),
+                      ],
+                    ),
+                    child: TextField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                        hintText: "Search for products...",
+                        prefixIcon: Icon(Icons.search, color: secondaryColor),
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(vertical: 14),
+                      ),
+                    ),
+                  ),
                 ],
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(
-                            left: 5, right: 5, top: 1, bottom: 1),
-                        child: Container(
-                          height: 108,
-                          width: 86,
+            ),
+            // Categories Section (updated image height handling)
+            Padding(
+              padding: const EdgeInsets.only(left: 20, top: 20, right: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  UiHelper.CustomText(
+                      text: "Shop by Category",
+                      color: Color(0xFF2F4858),
+                      fontweight: FontWeight.bold,
+                      fontsize: 18,
+                      fontfamily: "bold"
+                  ),
+                  TextButton(
+                    onPressed: () {
+
+                    },
+                    child: UiHelper.CustomText(
+                      text: "See all",
+                      color: Color(0xFF009085),
+                      fontweight: FontWeight.bold,
+                      fontsize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: screenHeight * 0.20,  // Increased from 0.18 to 0.20
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                itemCount: grocerykitchen.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start, // Changed from spaceBetween
+                      children: [
+                        Container(
+                          height: screenHeight * 0.12,
+                          width: screenWidth * 0.22,
                           decoration: BoxDecoration(
-                              color: Color(0XFFEAD3D3),
-                              borderRadius: BorderRadius.circular(10)),
+                            borderRadius: BorderRadius.circular(15),
+                            color: grocerykitchen[index]["color"] as Color,
+                            boxShadow: [
+                            BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 4,
+                            offset: Offset(0, 2),
+                            ),
+                            ],
+                          ),
+                          child: Center(
+                            child: SizedBox(
+                              height: 60,
+                              child: UiHelper.CustomImage(
+                                img: grocerykitchen[index]["img"].toString(),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 4),
+                        Container(
+                          width: screenWidth * 0.22,
+                          child: Center(
+                            child: UiHelper.CustomText(
+                              text: grocerykitchen[index]["text"].toString(),
+                              color: Color(0xFF2F4858),
+                              fontweight: FontWeight.w600,
+                              fontsize: 11,  // Reduced from 12 to 11
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            // Featured Products (updated image height handling)
+            Padding(
+              padding: const EdgeInsets.only(left: 20, top: 10, right: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  UiHelper.CustomText(
+                      text: "Featured Products",
+                      color: Color(0xFF2F4858),
+                      fontweight: FontWeight.bold,
+                      fontsize: 18,
+                      fontfamily: "bold"
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: UiHelper.CustomText(
+                      text: "See all",
+                      color: Color(0xFF009085),
+                      fontweight: FontWeight.bold,
+                      fontsize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(
+              height: screenHeight * 0.32,  // Increased from 0.28 to 0.32
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                itemCount: category.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    width: screenWidth * 0.35,
+                    margin: EdgeInsets.only(right: 15),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start, // Changed from default
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+                          child: Container(
+                            height: screenHeight * 0.14,  // Reduced from 0.15 to 0.14
+                            color: Colors.grey[100],
+                            child: Center(
+                              child: SizedBox(
+                                height: 70,  // Reduced from 80 to 70
+                                child: UiHelper.CustomImage(
+                                  img: category[index]["img"].toString(),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8),  // Reduced from 10 to 8
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Container(
+                                width: screenWidth * 0.3,
+                                child: UiHelper.CustomText(
+                                  text: category[index]["text"].toString(),
+                                  color: Color(0xFF2F4858),
+                                  fontweight: FontWeight.w600,
+                                  fontsize: 11,  // Reduced from 12 to 11
+                                ),
+                              ),
+                              SizedBox(height: 8),  // Reduced from 10 to 8
+                              Row(
+                                children: [
+                                  Icon(Icons.timer, size: 14, color: Color(0xFF009085)),  // Reduced from 16 to 14
+                                  SizedBox(width: 4),  // Reduced from 5 to 4
+                                  UiHelper.CustomText(
+                                    text: category[index]["time"].toString(),
+                                    color: Color(0xFF009085),
+                                    fontweight: FontWeight.w500,
+                                    fontsize: 11,  // Reduced from 12 to 11
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 4),  // Reduced from 5 to 4
                               UiHelper.CustomText(
-                                  text: data[index]["text"].toString(),
-                                  color: Colors.black,
-                                  fontweight: FontWeight.bold,
-                                  fontsize: 10),
-                              UiHelper.CustomImage(
-                                  img: data[index]["img"].toString())
+                                text: category[index]["price"].toString(),
+                                color: Color(0xFF009085),
+                                fontweight: FontWeight.bold,
+                                fontsize: 14,  // Reduced from 16 to 14
+                              ),
+                              SizedBox(height: 4),  // Reduced from 5 to 4
+                              Container(
+                                width: double.infinity,
+                                height: 28,  // Reduced from 30 to 28
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFFDD90D),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Center(
+                                  child: UiHelper.CustomText(
+                                    text: "Add to Cart",
+                                    color: Color(0xFF2F4858),
+                                    fontweight: FontWeight.bold,
+                                    fontsize: 11,  // Reduced from 12 to 11
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                      );
-                    },
-                    itemCount: data.length,
-                    scrollDirection: Axis.horizontal,
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+
+            // Special Offers Banner (unchanged)
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: Container(
+                height: screenHeight * 0.15,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  gradient: LinearGradient(
+                    colors: [Color(0xFFF6C445), Color(0xFFFDD90D)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-
-        Expanded(
-          flex: 2,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView.builder(
-              itemBuilder: (context, index) {
-                return Column(
+                child: Stack(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        clipBehavior: Clip.antiAlias,
-                        height: 108,
-                        width: 93,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: UiHelper.CustomImage(
-                            img: categroy[index]["img"].toString()),
+                    Positioned(
+                      left: 20,
+                      top: 20,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          UiHelper.CustomText(
+                            text: "Special Offer",
+                            color: Color(0xFF2F4858),
+                            fontweight: FontWeight.bold,
+                            fontsize: 18,
+                          ),
+                          UiHelper.CustomText(
+                            text: "20% OFF on first order",
+                            color: Color(0xFF2F4858),
+                            fontweight: FontWeight.w500,
+                            fontsize: 14,
+                          ),
+                          SizedBox(height: 10),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: Color(0xFF2F4858),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: UiHelper.CustomText(
+                              text: "GRAB NOW",
+                              color: Colors.white,
+                              fontweight: FontWeight.bold,
+                              fontsize: 12,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 20),
-                      child: UiHelper.CustomText(
-                          text: categroy[index]["text"].toString(),
-                          color: Colors.black,
-                          fontweight: FontWeight.bold,
-                          fontsize: 8),
+                    Positioned(
+                      right: 20,
+                      bottom: 0,
+                      child: Image.asset(
+                        "assets/images/grocery_bag.png",
+                        height: 100,
+                      ),
                     ),
-                    SizedBox(height: 5,),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: Row(children: [
-                        UiHelper.CustomImage(img: "timer 4.png"),
-                        UiHelper.CustomText(text: "16 MINS", color: Color(0XFF9C9C9C), fontweight: FontWeight.normal, fontsize: 10)
-                      ],),
-                    ),
-                    SizedBox(height: 5,),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 60),
-                      child: Row(children: [
-                        UiHelper.CustomImage(img: "image 50 (1).png"),
-                        UiHelper.CustomText(text: "79", color: Color(0XFF9C9C9C), fontweight: FontWeight.bold, fontsize: 15)
-
-                      ],),
-                    )
                   ],
-                );
-              },
-              itemCount: categroy.length,
-              scrollDirection: Axis.horizontal,
+                ),
+              ),
             ),
-          ),
-        ),
-        Row(
-          children: [
-            SizedBox(
-              width: 20,
-            ),
-            UiHelper.CustomText(
-                text: "Grocery & Kitchen",
-                color: Colors.black,
-                fontweight: FontWeight.bold,
-                fontsize: 14,
-                fontfamily: "bold")
           ],
         ),
-        SizedBox(
-          height: 10,
-        ),
-        Expanded(
-          flex: 1,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: ListView.builder(
-              itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Container(
-                        height: 78,
-                        width: 71,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Color(0XFFD9EBEB)),
-                        child: UiHelper.CustomImage(
-                            img: grocerykitchen[index]["img"].toString()),
-                      ),
-                    ),
-                    UiHelper.CustomText(
-                        text: grocerykitchen[index]["text"].toString(),
-                        color: Colors.black,
-                        fontweight: FontWeight.normal,
-                        fontsize: 10)
-                  ],
-                );
-              },
-              itemCount: grocerykitchen.length,
-              scrollDirection: Axis.horizontal,
-            ),
-          ),
-        ),
-      ],
-    ));
+      ),
+    );
   }
 }

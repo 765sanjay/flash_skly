@@ -1,293 +1,274 @@
-import 'package:blinkit_series/repository/widgets/uihelper.dart';
 import 'package:flutter/material.dart';
 
-class CategoryScreen extends StatelessWidget {
+class CategoryScreen extends StatefulWidget {
+  @override
+  _CategoryScreenState createState() => _CategoryScreenState();
+}
+
+class _CategoryScreenState extends State<CategoryScreen> {
   TextEditingController searchController = TextEditingController();
-  var grocerykitchen = [
-    {"img": "image 41.png", "text": "Vegetables & \nFruits"},
-    {"img": "image 42.png", "text": "Atta, Dal & \nRice"},
-    {"img": "image 43.png", "text": "Oil, Ghee & \nMasala"},
-    {"img": "image 44 (1).png", "text": "Dairy, Bread & \nMilk"},
-    {"img": "image 45 (1).png", "text": "Biscuits & \nBakery"}
+
+  // Color palette
+  final Color primaryColor = Color(0xFF009085);
+  final Color secondaryColor = Color(0xFF2F4858);
+  final Color accentColor = Color(0xFFF6C445);
+  final Color darkAccent = Color(0xFF006B7C);
+  final Color lightAccent = Color(0xFFFDD90D);
+
+  // Categories data with proper asset paths
+  final List<Map<String, dynamic>> grocerykitchen = [
+    {"img": "assets/images/image 41.png", "text": "Vegetables & \nFruits"},
+    {"img": "assets/images/image 42.png", "text": "Atta, Dal & \nRice"},
+    {"img": "assets/images/image 43.png", "text": "Oil, Ghee & \nMasala"},
+    {"img": "assets/images/image 44.png", "text": "Dairy, Bread & \nMilk"},
+    {"img": "assets/images/image 45.png", "text": "Biscuits & \nBakery"}
   ];
-  var secondgrocery = [
-    {"img": "image 21.png", "text": "Dry Fruits &\n Cereals"},
-    {"img": "image 22.png", "text": "Kitchen &\n Appliances"},
-    {"img": "image 23.png", "text": "Tea & \nCoffees"},
-    {"img": "image 24.png", "text": "Ice Creams & \nmuch more"},
-    {"img": "image 25.png", "text": "Noodles & \nPacket Food"}
+
+  final List<Map<String, dynamic>> secondgrocery = [
+    {"img": "assets/images/image 21.png", "text": "Dry Fruits &\n Cereals"},
+    {"img": "assets/images/image 22.png", "text": "Kitchen &\n Appliances"},
+    {"img": "assets/images/image 23.png", "text": "Tea & \nCoffees"},
+    {"img": "assets/images/image 24.png", "text": "Ice Creams & \nmuch more"},
+    {"img": "assets/images/image 25.png", "text": "Noodles & \nPacket Food"}
   ];
-  var snacksanddrinks = [
-    {"img": "image 31.png", "text": "Chips &\n Namkeens"},
-    {"img": "image 32.png", "text": "Sweets & \nChocalates"},
-    {"img": "image 33.png", "text": "Drinks & \nJuices"},
-    {"img": "image 34.png", "text": "Sauces &\n Spreads"},
-    {"img": "image 35.png", "text": "Beauty &\n Cosmetics"}
+
+  final List<Map<String, dynamic>> snacksanddrinks = [
+    {"img": "assets/images/image 31.png", "text": "Chips &\n Namkeens"},
+    {"img": "assets/images/image 32.png", "text": "Sweets & \nChocolates"},
+    {"img": "assets/images/image 33.png", "text": "Drinks & \nJuices"},
+    {"img": "assets/images/image 34.png", "text": "Sauces &\n Spreads"},
+    {"img": "assets/images/image 35.png", "text": "Beauty &\n Cosmetics"}
   ];
-  var hosuehold = [
-    {"img": "image 36.png"},
-    {"img": "image 37.png"},
-    {"img": "image 38.png"},
-    {"img": "image 39.png"},
-    {"img": "image 40.png"}
+
+  final List<Map<String, dynamic>> household = [
+    {"img": "assets/images/image 36.png", "text": "Cleaning \nSupplies"},
+    {"img": "assets/images/image 37.png", "text": "Laundry &\n Supplies"},
+    {"img": "assets/images/image 38.png", "text": "Home \nCare"},
+    {"img": "assets/images/image 39.png", "text": "Stationery &\n Office"},
+    {"img": "assets/images/image 40.png", "text": "Pet \nCare"}
   ];
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final itemWidth = (screenWidth - 60) / 4;
+
     return Scaffold(
-      body: Column(
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Header Section
+            _buildHeader(),
+
+            // Categories Sections
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildCategorySection("Grocery & Kitchen", grocerykitchen, itemWidth),
+                  _buildCategorySection("Pantry Essentials", secondgrocery, itemWidth),
+                  _buildCategorySection("Snacks & Drinks", snacksanddrinks, itemWidth),
+                  _buildCategorySection("Household Essentials", household, itemWidth),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [primaryColor, darkAccent],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(20),
+          bottomRight: Radius.circular(20),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      padding: EdgeInsets.only(top: 40, left: 20, right: 20, bottom: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: 40,
-          ),
-          Stack(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                height: 190,
-                width: double.infinity,
-                color: Color(0XFFF7CB45),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 20,
-                        ),
-                        UiHelper.CustomText(
-                            text: "Blinkit in",
-                            color: Color(0XFF000000),
-                            fontweight: FontWeight.bold,
-                            fontsize: 15,
-                            fontfamily: "bold"),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 20,
-                        ),
-                        UiHelper.CustomText(
-                            text: "16 minutes",
-                            color: Color(0XFF000000),
-                            fontweight: FontWeight.bold,
-                            fontsize: 20,
-                            fontfamily: "bold")
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 20,
-                        ),
-                        UiHelper.CustomText(
-                            text: "HOME ",
-                            color: Color(0XFF000000),
-                            fontweight: FontWeight.bold,
-                            fontsize: 14),
-                        UiHelper.CustomText(
-                            text: "- Sujal Dave, Ratanada, Jodhpur (Raj)",
-                            color: Color(0XFF000000),
-                            fontweight: FontWeight.bold,
-                            fontsize: 14)
-                      ],
-                    ),
-                  ],
+              Text(
+                "SKLY Flash",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
                 ),
               ),
-              Positioned(
-                right: 20,
-                bottom: 100,
-                child: CircleAvatar(
-                  radius: 15,
-                  backgroundColor: Colors.white,
-                  child: Icon(
-                    Icons.person,
-                    color: Colors.black,
-                    size: 20,
+              CircleAvatar(
+                radius: 18,
+                backgroundColor: lightAccent,
+                child: Icon(
+                  Icons.person,
+                  color: secondaryColor,
+                  size: 20,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 8),
+          Text(
+            "8 minutes delivery",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+            ),
+          ),
+          SizedBox(height: 8),
+          Row(
+            children: [
+              Icon(Icons.location_on, color: lightAccent, size: 16),
+              SizedBox(width: 4),
+              Flexible(
+                child: Text(
+                  "HOME - Sujal Dave, Ratanada, Jodhpur (Raj)",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
                   ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              Positioned(
-                  bottom: 30,
-                  left: 20,
-                  child: UiHelper.CustomTextField(controller: searchController))
             ],
           ),
-          SizedBox(
-            height: 30,
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: 20,
-              ),
-              UiHelper.CustomText(
-                  text: "Grocery & Kitchen",
-                  color: Colors.black,
-                  fontweight: FontWeight.bold,
-                  fontsize: 14,
-                  fontfamily: "bold")
-            ],
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Expanded(
-            flex: 5,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: ListView.builder(
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Container(
-                          height: 78,
-                          width: 71,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Color(0XFFD9EBEB)),
-                          child: UiHelper.CustomImage(
-                              img: grocerykitchen[index]["img"].toString()),
-                        ),
-                      ),
-                      UiHelper.CustomText(
-                          text: grocerykitchen[index]["text"].toString(),
-                          color: Colors.black,
-                          fontweight: FontWeight.normal,
-                          fontsize: 10)
-                    ],
-                  );
-                },
-                itemCount: grocerykitchen.length,
-                scrollDirection: Axis.horizontal,
-              ),
+          SizedBox(height: 16),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 8,
+                  offset: Offset(0, 2),
+                ),
+              ],
             ),
-          ),
-          Expanded(
-            flex: 5,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: ListView.builder(
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Container(
-                          height: 78,
-                          width: 71,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Color(0XFFD9EBEB)),
-                          child: UiHelper.CustomImage(
-                              img: secondgrocery[index]["img"].toString()),
-                        ),
-                      ),
-                      UiHelper.CustomText(
-                          text: secondgrocery[index]["text"].toString(),
-                          color: Colors.black,
-                          fontweight: FontWeight.normal,
-                          fontsize: 10)
-                    ],
-                  );
-                },
-                itemCount: secondgrocery.length,
-                scrollDirection: Axis.horizontal,
-              ),
-            ),
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: 20,
-              ),
-              UiHelper.CustomText(
-                  text: "Snacks & Drinks",
-                  color: Colors.black,
-                  fontweight: FontWeight.bold,
-                  fontsize: 14,
-                  fontfamily: "bold"),
-            ],
-          ),
-          Expanded(
-            flex: 5,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: ListView.builder(
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Container(
-                          height: 78,
-                          width: 71,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Color(0XFFD9EBEB)),
-                          child: UiHelper.CustomImage(
-                              img: snacksanddrinks[index]["img"].toString()),
-                        ),
-                      ),
-                      UiHelper.CustomText(
-                          text: snacksanddrinks[index]["text"].toString(),
-                          color: Colors.black,
-                          fontweight: FontWeight.normal,
-                          fontsize: 10)
-                    ],
-                  );
-                },
-                itemCount: snacksanddrinks.length,
-                scrollDirection: Axis.horizontal,
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: 20,
-              ),
-              UiHelper.CustomText(
-                  text: "Household Essentials",
-                  color: Colors.black,
-                  fontweight: FontWeight.bold,
-                  fontsize: 14)
-            ],
-          ),
-          Expanded(
-            flex: 4,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: ListView.builder(
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Container(
-                      height: 78,
-                      width: 71,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color(0XFFD9EBEB)),
-                      child: UiHelper.CustomImage(
-                          img: hosuehold[index]["img"].toString()),
-                    ),
-                  );
-                },
-                itemCount: grocerykitchen.length,
-                scrollDirection: Axis.horizontal,
+            child: TextField(
+              controller: searchController,
+              decoration: InputDecoration(
+                hintText: "Search for products...",
+                prefixIcon: Icon(Icons.search, color: secondaryColor),
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(vertical: 14),
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildCategorySection(String title, List<Map<String, dynamic>> items, double itemWidth) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            color: secondaryColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
+        SizedBox(height: 8),
+        SizedBox(
+          height: 120,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final imagePath = items[index]["img"];
+              final imageName = imagePath.split('/').last;
+
+              return Container(
+                width: itemWidth,
+                margin: EdgeInsets.only(right: 12),
+                child: Column(
+                  children: [
+                    Container(
+                      width: itemWidth,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 4,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Image.asset(
+                          imagePath,
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) {
+                            debugPrint('Failed to load image: $imagePath');
+                            debugPrint('Error: $error');
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.error, color: Colors.red, size: 24),
+                                SizedBox(height: 4),
+                                Text(
+                                  imageName,
+                                  style: TextStyle(fontSize: 8),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    if (items[index]["text"] != null)
+                      Text(
+                        items[index]["text"],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: secondaryColor,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        SizedBox(height: 24),
+      ],
     );
   }
 }
