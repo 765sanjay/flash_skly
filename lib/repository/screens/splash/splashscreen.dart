@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
        child: Column(
          mainAxisAlignment: MainAxisAlignment.center,
          children: [
-         UiHelper.CustomImage(img: "image 1 (1).png"),
+         UiHelper.CustomImage(img: "preload.jpeg"),
        ],),
      ),
    );

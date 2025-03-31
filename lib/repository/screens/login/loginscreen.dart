@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               UiHelper.CustomImage(img: "Blinkit Onboarding Screen.png"),
               SizedBox(height: 30),
-              UiHelper.CustomImage(img: "image 10.png"),
+              UiHelper.CustomImage(img: "logo.png"),
               SizedBox(height: 20),
               UiHelper.CustomText(
                 text: "India's last minute app",
@@ -93,44 +93,64 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(height: 16),
                       ],
 
-                      // Login with Email Button
+                      // Main Action Button (toggles between login and submit)
                       SizedBox(
                         height: 48,
                         width: 295,
                         child: ElevatedButton(
                           onPressed: () {
-                            setState(() {
-                              showEmailField = !showEmailField;
-                              if (showEmailField) showPhoneField = false;
-                            });
+                            if (showEmailField) {
+                              // Handle email submission
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BottomNavScreen(),
+                                ),
+                              );
+                            } else if (showPhoneField) {
+                              // Handle phone submission
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BottomNavScreen(),
+                                ),
+                              );
+                            } else {
+                              // Show email field
+                              setState(() {
+                                showEmailField = true;
+                                showPhoneField = false;
+                              });
+                            }
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFFF6C445),
+                            backgroundColor: showEmailField || showPhoneField
+                                ? Color(0xFF009085)
+                                : Color(0xFFF6C445),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              UiHelper.CustomText(
-                                text: showEmailField
-                                    ? "Submit Email"
-                                    : "Login with mail",
-                                color: Color(0xFF2F4858),
-                                fontweight: FontWeight.bold,
-                                fontsize: 14,
-                                fontfamily: "bold",
-                              ),
-                            ],
+                          child: Text(
+                            showEmailField
+                                ? "Submit Email"
+                                : showPhoneField
+                                ? "Submit Phone"
+                                : "Login with mail",
+                            style: TextStyle(
+                              color: showEmailField || showPhoneField
+                                  ? Colors.white
+                                  : Color(0xFF2F4858),
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
 
                       SizedBox(height: 8),
 
-                      // OR Divider
-                      if (!showEmailField && !showPhoneField)
+                      // OR Divider (only shown when no fields are visible)
+                      if (!showEmailField && !showPhoneField) ...[
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 8),
                           child: Row(
@@ -144,88 +164,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             ],
                           ),
                         ),
-
-                      // Login with Phone Option
-                      if (!showPhoneField)
+                        // Alternative login option
                         TextButton(
                           onPressed: () {
                             setState(() {
-                              showPhoneField = !showPhoneField;
-                              if (showPhoneField) showEmailField = false;
+                              showPhoneField = true;
+                              showEmailField = false;
                             });
                           },
                           child: UiHelper.CustomText(
-                            text: showPhoneField
-                                ? "Submit Phone"
-                                : "or login with phone number",
+                            text: "or login with phone number",
                             color: Color(0XFF269237),
                             fontweight: FontWeight.normal,
                             fontsize: 14,
-                          ),
-                        ),
-
-                      // Submit Button for Phone (shown when phone field is visible)
-                      if (showPhoneField) ...[
-                        SizedBox(height: 16),
-                        SizedBox(
-                          height: 48,
-                          width: 295,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              // Handle phone submission
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => BottomNavScreen(),
-                                ),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFF009085),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            child: Text(
-                              "Submit Phone",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-
-                      // Submit Button for Email (shown when email field is visible)
-                      if (showEmailField) ...[
-                        SizedBox(height: 16),
-                        SizedBox(
-                          height: 48,
-                          width: 295,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              // Handle email submission
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => BottomNavScreen(),
-                                ),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFF009085),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            child: Text(
-                              "Submit Email",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
                           ),
                         ),
                       ],

@@ -142,6 +142,8 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             // Categories Section (updated image height handling)
+            // In your HomeScreen class, modify the "Shop by Category" section:
+
             Padding(
               padding: const EdgeInsets.only(left: 20, top: 20, right: 20),
               child: Row(

@@ -1,7 +1,8 @@
 import 'package:blinkit_series/repository/screens/cart/cartscreen.dart';
 import 'package:blinkit_series/repository/screens/category/categoryscreen.dart';
 import 'package:blinkit_series/repository/screens/home/homescreen.dart';
-import 'package:blinkit_series/repository/screens/print/printscreen.dart';
+import 'package:blinkit_series/repository/screens/print/offerscreen.dart';
+import 'package:blinkit_series/repository/screens/print/offerscreen.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavScreen extends StatefulWidget {
@@ -23,7 +24,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     HomeScreen(),
     CartScreen(),
     CategoryScreen(),
-    PrintScreen(),
+    OffersScreen(),
   ];
 
   // Colors for each tab
@@ -67,8 +68,8 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
               label: "Categories",
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.print),
-              label: "Print",
+              icon: Icon(Icons.local_offer),
+              label: "Offer",
             ),
           ],
           type: BottomNavigationBarType.fixed,
