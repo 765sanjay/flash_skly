@@ -1,9 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:blinkit_series/repository/screens/cart/cartscreen.dart';
 import 'package:blinkit_series/repository/screens/category/categoryscreen.dart';
 import 'package:blinkit_series/repository/screens/home/homescreen.dart';
 import 'package:blinkit_series/repository/screens/print/offerscreen.dart';
-import 'package:blinkit_series/repository/screens/print/offerscreen.dart';
-import 'package:flutter/material.dart';
+import 'package:blinkit_series/repository/screens/profile/profilescreen.dart';
 
 class BottomNavScreen extends StatefulWidget {
   @override
@@ -25,20 +25,13 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     CartScreen(),
     CategoryScreen(),
     OffersScreen(),
-  ];
-
-  // Colors for each tab
-  List<Color> pageColors = [
-    Color(0xFF009085), // Home - Teal
-    Color(0xFFF6C445), // Cart - Gold
-    Color(0xFF2F4858), // Categories - Dark blue
-    Color(0xFF006B7C), // Print - Dark teal
+    GroceryApp(), // Changed from GroceryApp to ProfileScreen
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: pageColors[currentIndex].withOpacity(0.1),
+      backgroundColor: Colors.grey[100], // Changed from dynamic color to a fixed light background
       body: IndexedStack(
         index: currentIndex,
         children: pages,
@@ -54,7 +47,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
           ],
         ),
         child: BottomNavigationBar(
-          items: [
+          items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: "Home",
@@ -71,11 +64,15 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
               icon: Icon(Icons.local_offer),
               label: "Offer",
             ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: "Profile",
+            ),
           ],
           type: BottomNavigationBarType.fixed,
           currentIndex: currentIndex,
-          selectedItemColor: lightAccent, // Bright yellow for selected items
-          unselectedItemColor: secondaryColor.withOpacity(0.6),
+          selectedItemColor: Color(0xFFFDD90D), // Bright yellow for selected items
+          unselectedItemColor: Color(0xFF2F4858).withOpacity(0.6),
           backgroundColor: Colors.white,
           selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
           onTap: (index) {

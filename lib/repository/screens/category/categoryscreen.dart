@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import "../category/productpage.dart";
 
 class CategoryScreen extends StatefulWidget {
   @override
@@ -29,32 +30,32 @@ class _CategoryScreenState extends State<CategoryScreen> {
   // Sub-categories data
   final Map<String, List<Map<String, String>>> categoryData = {
     'Grocery & Kitchen': [
-      {"name": "Fruits & Vegetables", "img": "assets/images/image41.png"},
+      {"name": "Fruits & Vegetables", "img": "assets/images/image 41.png"},
       {"name": "Dairy, Bread & Eggs", "img": "assets/images/dairy_category.jpeg"},
-      {"name": "Atta, Rice, Oil & Dals", "img": "assets/images/image43.png"},
+      {"name": "Atta, Rice, Oil & Dals", "img": "assets/images/image 43.png"},
       {"name": "Meat, Fish & Eggs", "img": "assets/images/meat_fish.jpeg"},
       {"name": "Masala & Dry Fruits", "img": "assets/images/masalas.jpeg"},
     ],
     'Snacks & Drinks': [
       {"name": "Tea, Coffee & More", "img": "assets/images/tea_coffee.jpeg"},
-      {"name": "Packaged Food", "img": "assets/images/packaged_food.jpeg"},
-      {"name": "Ice Creams & More", "img": "assets/images/image24.png"},
+      {"name": "Packaged Food", "img": "assets/images/packed_food.jpeg"},
+      {"name": "Ice Creams & More", "img": "assets/images/image 24.png"},
       {"name": "Frozen Food", "img": "assets/images/frozen_foods.jpeg"},
-      {"name": "Sweet Cravings", "img": "assets/images/image32.png"},
+      {"name": "Sweet Cravings", "img": "assets/images/image 32.png"},
       {"name": "Cold Drinks & Juices", "img": "assets/images/fruit_juices.jpeg"},
-      {"name": "Munchies", "img": "assets/images/image31.png"},
+      {"name": "Munchies", "img": "assets/images/image 31.png"},
       {"name": "Biscuits & Cookies", "img": "assets/images/biscuits.jpeg"},
     ],
     'Beauty & Personal Care': [
       {"name": "Skincare", "img": "assets/images/skincare.jpeg"},
       {"name": "Haircare", "img": "assets/images/haircare.jpeg"},
       {"name": "Makeup", "img": "assets/images/makeup.jpeg"},
-      {"name": "Personal Care", "img": "assets/images/personal_care.jpeg"},
+      {"name": "Personal Care", "img": "assets/images/persnal_care.jpeg"},
       {"name": "Perfumes", "img": "assets/images/perfumes.jpeg"},
     ],
     'Electronics & Accessories': [
-      {"name": "Headphones", "img": "assets/images/Wired_Earphones.png"},
-      {"name": "Lights & electricals", "img": "assets/images/Lights.jpeg"},
+      {"name": "Headphones", "img": "assets/images/Wired_Earphones.jpg"},
+      {"name": "Lights & electricals", "img": "assets/images/Lights.jpg"},
       {"name": "Battery", "img": "assets/images/batteries.png"},
     ],
   };
@@ -328,24 +329,20 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 
-
   void _navigateToProducts(String category) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => Scaffold(
-          appBar: AppBar(
-            title: Text(category),
-            backgroundColor: primaryColor,
-          ),
-          body: Center(
-            child: Text(
-              'Products for $category',
-              style: TextStyle(color: secondaryColor),
-            ),
-          ),
+        builder: (context) => ProductsPage(
+          category: category,
+          primaryColor: primaryColor,
+          secondaryColor: secondaryColor,
+          accentColor: accentColor,
+          darkAccent: darkAccent,
+          lightAccent: lightAccent,
         ),
       ),
     );
   }
 }
+
