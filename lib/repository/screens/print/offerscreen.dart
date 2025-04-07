@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:blinkit_series/repository/widgets/uihelper.dart';
+import 'package:skly_flash/repository/widgets/uihelper.dart';
 
 class OffersScreen extends StatelessWidget {
   final List<Offer> offers = [

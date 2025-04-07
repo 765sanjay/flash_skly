@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:blinkit_series/repository/screens/cart/cartscreen.dart';
-import 'package:blinkit_series/repository/screens/category/categoryscreen.dart';
-import 'package:blinkit_series/repository/screens/home/homescreen.dart';
-import 'package:blinkit_series/repository/screens/print/offerscreen.dart';
-import 'package:blinkit_series/repository/screens/profile/profilescreen.dart';
+import 'package:skly_flash/repository/screens/cart/cartscreen.dart';
+import 'package:skly_flash/repository/screens/category/categoryscreen.dart';
+import 'package:skly_flash/repository/screens/home/homescreen.dart';
+import 'package:skly_flash/repository/screens/print/offerscreen.dart';
+import 'package:skly_flash/repository/screens/profile/profilescreen.dart';
 
 class BottomNavScreen extends StatefulWidget {
   @override

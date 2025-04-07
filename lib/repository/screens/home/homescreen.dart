@@ -1,4 +1,4 @@
-import 'package:blinkit_series/repository/widgets/uihelper.dart';
+import 'package:skly_flash/repository/widgets/uihelper.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {

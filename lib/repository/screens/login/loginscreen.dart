@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               UiHelper.CustomImage(img: "Blinkit Onboarding Screen.png"),
               SizedBox(height: 30),
-              UiHelper.CustomImage(img: "logo.png"),
+              UiHelper.CustomImage(img: "sklyit-flash-logo.png"),
               SizedBox(height: 20),
               UiHelper.CustomText(
                 text: "India's last minute app",

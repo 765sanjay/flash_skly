@@ -1,4 +1,4 @@
-import 'package:blinkit_series/repository/screens/splash/splashscreen.dart';
+import 'package:skly_flash/repository/screens/splash/splashscreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Blinkit',
+        title: 'Flash',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
