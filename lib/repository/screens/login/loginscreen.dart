@@ -23,10 +23,14 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               UiHelper.CustomImage(img: "Blinkit Onboarding Screen.png"),
               SizedBox(height: 30),
-              UiHelper.CustomImage(img: "sklyit-flash-logo.png"),
-              SizedBox(height: 20),
+              SizedBox(
+                width: 30,
+                height: 30,
+                child: UiHelper.CustomImage(img: "flash.png"),
+              ),
+              SizedBox(height: 10),
               UiHelper.CustomText(
-                text: "India's last minute app",
+                text: "Think it! We bring it!",
                 color: Color(0XFF000000),
                 fontweight: FontWeight.bold,
                 fontsize: 20,
@@ -49,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       SizedBox(height: 20),
 
-                      // Email Input Field (shown when showEmailField is true)
+                      // Email Input Field
                       if (showEmailField) ...[
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20),
@@ -71,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(height: 16),
                       ],
 
-                      // Phone Input Field (shown when showPhoneField is true)
+                      // Phone Input Field
                       if (showPhoneField) ...[
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20),
@@ -93,14 +97,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(height: 16),
                       ],
 
-                      // Main Action Button (toggles between login and submit)
+                      // Main Action Button
                       SizedBox(
                         height: 48,
                         width: 295,
                         child: ElevatedButton(
                           onPressed: () {
                             if (showEmailField) {
-                              // Handle email submission
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
@@ -108,7 +111,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               );
                             } else if (showPhoneField) {
-                              // Handle phone submission
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
@@ -116,7 +118,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               );
                             } else {
-                              // Show email field
                               setState(() {
                                 showEmailField = true;
                                 showPhoneField = false;
@@ -149,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       SizedBox(height: 8),
 
-                      // OR Divider (only shown when no fields are visible)
+                      // OR Divider
                       if (!showEmailField && !showPhoneField) ...[
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 8),
@@ -164,7 +165,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ],
                           ),
                         ),
-                        // Alternative login option
                         TextButton(
                           onPressed: () {
                             setState(() {

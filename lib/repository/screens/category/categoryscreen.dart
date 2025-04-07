@@ -194,45 +194,64 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   Widget _buildCategoryNavBar() {
     return Container(
-      height: 70,
-      color: Colors.white,
+      height: 90,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.symmetric(horizontal: 12),
         itemCount: categories.length,
         itemBuilder: (context, index) {
           bool isSelected = selectedCategory == categories[index]['label'];
           return Container(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: isSelected ? primaryColor : Colors.transparent,
-                  width: 3,
-                ),
-              ),
-            ),
+            margin: EdgeInsets.only(right: 12),
             child: GestureDetector(
               onTap: () {
                 setState(() {
                   selectedCategory = categories[index]['label'];
                 });
               },
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                margin: EdgeInsets.only(right: index == categories.length - 1 ? 16 : 0),
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 200),
+                curve: Curves.easeInOut,
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: BoxDecoration(
+                  color: isSelected ? primaryColor.withOpacity(0.1) : Colors.transparent,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: isSelected ? primaryColor : Colors.transparent,
+                    width: 1.5,
+                  ),
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      categories[index]['icon'],
-                      color: isSelected ? primaryColor : Colors.grey[600],
-                      size: 24,
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: isSelected ? primaryColor : Colors.grey[100],
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        categories[index]['icon'],
+                        color: isSelected ? Colors.white : Colors.grey[700],
+                        size: 20,
+                      ),
                     ),
-                    SizedBox(height: 4),
+                    SizedBox(height: 6),
                     Text(
                       categories[index]['label'],
                       style: TextStyle(
-                        color: isSelected ? primaryColor : Colors.grey[600],
-                        fontWeight: FontWeight.bold,
+                        color: isSelected ? primaryColor : Colors.grey[700],
+                        fontWeight: FontWeight.w600,
                         fontSize: 12,
                       ),
                     ),
@@ -345,4 +364,3 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 }
-
