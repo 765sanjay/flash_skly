@@ -37,8 +37,95 @@ class GroceryApp extends StatelessWidget {
 }
 
 // Personal Information Page
-class PersonalInfoPage extends StatelessWidget {
+class PersonalInfoPage extends StatefulWidget {
   const PersonalInfoPage({super.key});
+
+  @override
+  State<PersonalInfoPage> createState() => _PersonalInfoPageState();
+}
+
+class _PersonalInfoPageState extends State<PersonalInfoPage> {
+  String fullName = 'Sarah Johnson';
+  String email = 'sarah.johnson@example.com';
+  String phoneNumber = '+1 (555) 123-4567';
+  String dateOfBirth = 'January 15, 1990';
+
+  void _editInformation() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return SingleChildScrollView(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'Edit Personal Information',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  initialValue: fullName,
+                  decoration: const InputDecoration(
+                    labelText: 'Full Name',
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: (value) => fullName = value,
+                ),
+                const SizedBox(height: 15),
+                TextFormField(
+                  initialValue: email,
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: (value) => email = value,
+                ),
+                const SizedBox(height: 15),
+                TextFormField(
+                  initialValue: phoneNumber,
+                  decoration: const InputDecoration(
+                    labelText: 'Phone Number',
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: (value) => phoneNumber = value,
+                ),
+                const SizedBox(height: 15),
+                TextFormField(
+                  initialValue: dateOfBirth,
+                  decoration: const InputDecoration(
+                    labelText: 'Date of Birth',
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: (value) => dateOfBirth = value,
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {});
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF009085),
+                    minimumSize: const Size(double.infinity, 50),
+                  ),
+                  child: const Text('Save Changes'),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,15 +139,15 @@ class PersonalInfoPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildInfoCard('Full Name', 'Sarah Johnson'),
-            _buildInfoCard('Email', 'sarah.johnson@example.com'),
-            _buildInfoCard('Phone Number', '+1 (555) 123-4567'),
-            _buildInfoCard('Date of Birth', 'January 15, 1990'),
+            _buildInfoCard('Full Name', fullName),
+            _buildInfoCard('Email', email),
+            _buildInfoCard('Phone Number', phoneNumber),
+            _buildInfoCard('Date of Birth', dateOfBirth),
             const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: _editInformation,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF009085),
                   padding: const EdgeInsets.symmetric(vertical: 15),
@@ -77,6 +164,10 @@ class PersonalInfoPage extends StatelessWidget {
   Widget _buildInfoCard(String title, String value) {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -84,12 +175,13 @@ class PersonalInfoPage extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
-                color: Colors.grey,
+                color: Colors.grey[600],
+                fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 8),
             Text(
               value,
               style: const TextStyle(
@@ -242,6 +334,12 @@ class FavoritesPage extends StatelessWidget {
                 imagePath,
                 width: double.infinity,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    color: Colors.grey[200],
+                    child: const Icon(Icons.image_not_supported),
+                  );
+                },
               ),
             ),
           ),
@@ -526,8 +624,16 @@ class _HelpCenterExpansionState extends State<HelpCenterExpansion> {
 }
 
 // Main Profile Page
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  String fullName = 'Sarah Johnson';
+  String email = 'sarah.johnson@example.com';
 
   @override
   Widget build(BuildContext context) {
@@ -574,9 +680,9 @@ class ProfilePage extends StatelessWidget {
                     backgroundColor: Colors.white,
                   ),
                   const SizedBox(height: 15),
-                  const Text(
-                    'Sarah Johnson',
-                    style: TextStyle(
+                  Text(
+                    fullName,
+                    style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -584,7 +690,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    'sarah.johnson@example.com',
+                    email,
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.white.withOpacity(0.8),
@@ -613,9 +719,17 @@ class ProfilePage extends StatelessWidget {
                     icon: Icons.person_outline,
                     color: const Color(0xFFF6C445),
                     title: 'Personal Information',
-                    onTap: () {
-                      Navigator.pushNamed(context, '/personalInfo');
+                    onTap: () async {
+                      final updatedInfo = await Navigator.pushNamed(context, '/personalInfo');
+
+                      if (updatedInfo != null && updatedInfo is Map<String, dynamic>) {
+                        setState(() {
+                          fullName = updatedInfo['fullName'] ?? '';
+                          email = updatedInfo['email'] ?? '';
+                        });
+                      }
                     },
+
                   ),
                   const DeliveryAddressExpansion(),
                   _buildProfileOption(

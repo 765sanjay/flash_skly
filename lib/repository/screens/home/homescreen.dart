@@ -1,5 +1,6 @@
 import 'package:skly_flash/repository/widgets/uihelper.dart';
 import 'package:flutter/material.dart';
+import 'package:skly_flash/repository/app_header.dart';
 
 class HomeScreen extends StatelessWidget {
   TextEditingController searchController = TextEditingController();
@@ -41,106 +42,7 @@ class HomeScreen extends StatelessWidget {
           children: [
             // Header Section
             // Header Section (corrected)
-            Container(
-              height: 220,  // Increased height to accommodate all elements
-              width: double.infinity,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Color(0xFF009085), Color(0xFF006B7C)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-              padding: EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Header Row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "SKLY Flash",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                      CircleAvatar(
-                        radius: 18,
-                        backgroundColor: lightAccent,
-                        child: Icon(
-                          Icons.person,
-                          color: secondaryColor,
-                          size: 20,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  SizedBox(height: 8),  // Spacing between header and delivery text
-
-                  // Delivery Text
-                  Text(
-                    "8 minutes delivery",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22,
-                    ),
-                  ),
-
-                  SizedBox(height: 16),  // Spacing between delivery text and location
-
-                  // Location Row
-                  Row(
-                    children: [
-                      Icon(Icons.location_on, color: lightAccent, size: 16),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          "HOME - Sujal Dave, Ratanada, Jodhpur (Raj)",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  Spacer(),  // Pushes search bar to bottom
-
-                  // Search Bar
-                  Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                      BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 8,
-                      offset: Offset(0, 2),
-                      ),
-                      ],
-                    ),
-                    child: TextField(
-                      controller: searchController,
-                      decoration: InputDecoration(
-                        hintText: "Search for products...",
-                        prefixIcon: Icon(Icons.search, color: secondaryColor),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(vertical: 14),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            AppHeader(searchController: searchController),
             // Categories Section (updated image height handling)
             // In your HomeScreen class, modify the "Shop by Category" section:
 

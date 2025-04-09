@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import "../category/productpage.dart";
+import 'package:skly_flash/repository/app_header.dart';
 
 class CategoryScreen extends StatefulWidget {
   @override
@@ -67,109 +68,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       body: Column(
         children: [
           // Header with Search Bar
-          Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [primaryColor, darkAccent],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header Row
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "SKLY Flash",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    CircleAvatar(
-                      radius: 18,
-                      backgroundColor: lightAccent,
-                      child: Icon(
-                        Icons.person,
-                        color: secondaryColor,
-                        size: 20,
-                      ),
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: 8),
-
-                // Delivery Text
-                Text(
-                  "8 minutes delivery",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 22,
-                  ),
-                ),
-
-                SizedBox(height: 16),
-
-                // Location Row
-                Row(
-                  children: [
-                    Icon(Icons.location_on, color: lightAccent, size: 16),
-                    SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        "HOME - Sujal Dave, Ratanada, Jodhpur (Raj)",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: 16),
-
-                // Search Bar
-                Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 8,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: TextField(
-                    controller: searchController,
-                    onChanged: (value) {
-                      setState(() {
-                        searchQuery = value;
-                      });
-                    },
-                    decoration: InputDecoration(
-                      hintText: "Search for products...",
-                      prefixIcon: Icon(Icons.search, color: secondaryColor),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(vertical: 14),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          AppHeader(searchController: searchController),
 
           // Category Navigation Bar
           _buildCategoryNavBar(),

@@ -1,6 +1,6 @@
 import 'package:skly_flash/repository/widgets/uihelper.dart';
 import 'package:flutter/material.dart';
-
+import 'package:skly_flash/repository/app_header.dart';
 class CartScreen extends StatelessWidget {
   TextEditingController searchController = TextEditingController();
 
@@ -18,106 +18,7 @@ class CartScreen extends StatelessWidget {
       body: Column(
         children: [
           // Header Section
-          Container(
-            height: 190,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [primaryColor, darkAccent],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 10,
-                  offset: Offset(0, 5),
-                ),
-              ],
-            ),
-            child: Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 40, left: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      UiHelper.CustomText(
-                        text: "SKLY Flash",
-                        color: Colors.white,
-                        fontweight: FontWeight.bold,
-                        fontsize: 18,
-                        fontfamily: "bold",
-                      ),
-                      SizedBox(height: 8),
-                      UiHelper.CustomText(
-                        text: "8 minutes delivery",
-                        color: lightAccent,
-                        fontweight: FontWeight.bold,
-                        fontsize: 22,
-                        fontfamily: "bold",
-                      ),
-                      SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Icon(Icons.location_on, color: lightAccent, size: 16),
-                          SizedBox(width: 4),
-                          Flexible(
-                            child: UiHelper.CustomText(
-                              text: "HOME - Sujal Dave, Ratanada, Jodhpur (Raj)",
-                              color: Colors.white,
-                              fontweight: FontWeight.w500,
-                              fontsize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  right: 20,
-                  top: 40,
-                  child: CircleAvatar(
-                    radius: 18,
-                    backgroundColor: lightAccent,
-                    child: Icon(
-                      Icons.person,
-                      color: secondaryColor,
-                      size: 20,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 30,
-                  left: 20,
-                  right: 20,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 8,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: TextField(
-                      controller: searchController,
-                      decoration: InputDecoration(
-                        hintText: "Search for products...",
-                        prefixIcon: Icon(Icons.search, color: secondaryColor),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(vertical: 14),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          AppHeader(searchController: searchController),
 
           // Empty Cart Content
           Expanded(
