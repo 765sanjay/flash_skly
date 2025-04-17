@@ -5,19 +5,25 @@ class UiHelper {
     return Image.asset("assets/images/$img");
   }
 
-  static CustomText(
-      {required String text,
-      required Color color,
-      required FontWeight fontweight,
-      String? fontfamily,
-      required double fontsize}) {
+  static CustomText({
+    required String text,
+    required Color color,
+    required FontWeight fontweight,
+    String? fontfamily,
+    required double fontsize,
+    int? maxLines, // Optional maxLines parameter
+    TextOverflow? overflow, // Optional overflow parameter
+  }) {
     return Text(
       text,
+      maxLines: maxLines, // Use the maxLines parameter
+      overflow: overflow, // Use the overflow parameter
       style: TextStyle(
-          fontSize: fontsize,
-          fontFamily: fontfamily ?? "regular",
-          fontWeight: fontweight,
-          color: color),
+        fontSize: fontsize,
+        fontFamily: fontfamily ?? "regular",
+        fontWeight: fontweight,
+        color: color,
+      ),
     );
   }
   static CustomTextField({required TextEditingController controller}){

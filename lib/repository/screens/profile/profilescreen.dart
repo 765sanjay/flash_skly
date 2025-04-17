@@ -47,79 +47,127 @@ class PersonalInfoPage extends StatefulWidget {
 class _PersonalInfoPageState extends State<PersonalInfoPage> {
   String fullName = 'Sarah Johnson';
   String email = 'sarah.johnson@example.com';
-  String phoneNumber = '+1 (555) 123-4567';
-  String dateOfBirth = 'January 15, 1990';
+  String phoneNumber = '+91 9876543210';
+  String dateOfBirth = '1990-01-15';
+
+  final _formKey = GlobalKey<FormState>();
 
   void _editInformation() {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       builder: (context) {
+        DateTime? selectedDate;
+
         return SingleChildScrollView(
           padding: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
           child: Container(
             padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  'Edit Personal Information',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'Edit Information',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  initialValue: fullName,
-                  decoration: const InputDecoration(
-                    labelText: 'Full Name',
-                    border: OutlineInputBorder(),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    initialValue: fullName,
+                    decoration: const InputDecoration(labelText: 'Full Name'),
+                    onChanged: (value) {
+                      fullName = value;
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your full name';
+                      }
+                      return null;
+                    },
                   ),
-                  onChanged: (value) => fullName = value,
-                ),
-                const SizedBox(height: 15),
-                TextFormField(
-                  initialValue: email,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
+                  const SizedBox(height: 15),
+                  TextFormField(
+                    initialValue: email,
+                    decoration: const InputDecoration(labelText: 'Email'),
+                    onChanged: (value) {
+                      email = value;
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                        return 'Please enter a valid email address';
+                      }
+                      return null;
+                    },
                   ),
-                  onChanged: (value) => email = value,
-                ),
-                const SizedBox(height: 15),
-                TextFormField(
-                  initialValue: phoneNumber,
-                  decoration: const InputDecoration(
-                    labelText: 'Phone Number',
-                    border: OutlineInputBorder(),
+                  const SizedBox(height: 15),
+                  TextFormField(
+                    initialValue: phoneNumber,
+                    decoration: const InputDecoration(
+                      labelText: 'Phone Number',
+                      hintText: '+91 9876543210',
+                    ),
+                    keyboardType: TextInputType.phone,
+                    maxLength: 10,
+                    onChanged: (value) {
+                      phoneNumber = value;
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your phone number';
+                      }
+                      final phoneRegExp = RegExp(r'^[6-9]\d{9}$');
+                      if (!phoneRegExp.hasMatch(value)) {
+                        return 'Please enter a valid 10-digit Indian phone number';
+                      }
+                      return null;
+                    },
                   ),
-                  onChanged: (value) => phoneNumber = value,
-                ),
-                const SizedBox(height: 15),
-                TextFormField(
-                  initialValue: dateOfBirth,
-                  decoration: const InputDecoration(
-                    labelText: 'Date of Birth',
-                    border: OutlineInputBorder(),
+                  const SizedBox(height: 15),
+                  GestureDetector(
+                    onTap: () async {
+                      final DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime.now(),
+                      );
+                      if (pickedDate != null) {
+                        setState(() {
+                          dateOfBirth =
+                          '${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}';
+                        });
+                      }
+                    },
+                    child: AbsorbPointer(
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Date of Birth',
+                        ),
+                        controller: TextEditingController(text: dateOfBirth),
+                      ),
+                    ),
                   ),
-                  onChanged: (value) => dateOfBirth = value,
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {});
-                    Navigator.pop(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF009085),
-                    minimumSize: const Size(double.infinity, 50),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        Navigator.pop(context);
+                        setState(() {});
+                      }
+                    },
+                    child: const Text('Save'),
                   ),
-                  child: const Text('Save Changes'),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
@@ -163,6 +211,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
 
   Widget _buildInfoCard(String title, String value) {
     return Card(
+
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 2,
       shape: RoundedRectangleBorder(
@@ -184,6 +233,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             const SizedBox(height: 8),
             Text(
               value,
+
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -195,6 +245,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     );
   }
 }
+
+
+
 
 // Order History Page
 class OrderHistoryPage extends StatelessWidget {
