@@ -2,8 +2,14 @@ import 'package:skly_flash/repository/widgets/uihelper.dart';
 import 'package:flutter/material.dart';
 import 'package:skly_flash/repository/app_header.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   TextEditingController searchController = TextEditingController();
+  String searchQuery = '';
 
   // Color palette
   final Color primaryColor = Color(0xFF009085);
@@ -31,6 +37,12 @@ class HomeScreen extends StatelessWidget {
   ];
 
   @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
@@ -40,8 +52,6 @@ class HomeScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Header Section
-            // Header Section (corrected)
             AppHeader(searchController: searchController),
             // Categories Section (updated image height handling)
             // In your HomeScreen class, modify the "Shop by Category" section:
