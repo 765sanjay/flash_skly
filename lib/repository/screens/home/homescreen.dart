@@ -5,8 +5,14 @@ import 'package:skly_flash/repository/screens/category/categoryscreen.dart';
 import 'package:skly_flash/repository/screens/category/productpage.dart';
 import 'package:skly_flash/repository/screens/profile/profilescreen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   TextEditingController searchController = TextEditingController();
+  String searchQuery = '';
 
   // Color palette
   final Color primaryColor = Color(0xFF009085);
@@ -37,6 +43,12 @@ class HomeScreen extends StatelessWidget {
   ];
 
   @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
@@ -46,7 +58,10 @@ class HomeScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+<<<<<<< HEAD
             // Header Section
+=======
+>>>>>>> 311c0482fe110f5590e6b8ace1a006cb411400d1
             AppHeader(searchController: searchController),
 
             // Categories Section

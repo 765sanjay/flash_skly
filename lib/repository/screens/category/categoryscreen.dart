@@ -62,6 +62,17 @@ class _CategoryScreenState extends State<CategoryScreen> {
   };
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -75,16 +86,18 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
           // Main Content
           Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  _buildCategorySection("Grocery & Kitchen"),
-                  _buildCategorySection("Snacks & Drinks"),
-                  _buildCategorySection("Beauty & Personal Care"),
-                  _buildCategorySection("Electronics & Accessories"),
-                ],
-              ),
-            ),
+            child: searchQuery.isEmpty
+                ? SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        _buildCategorySection("Grocery & Kitchen"),
+                        _buildCategorySection("Snacks & Drinks"),
+                        _buildCategorySection("Beauty & Personal Care"),
+                        _buildCategorySection("Electronics & Accessories"),
+                      ],
+                    ),
+                  )
+                : _buildSearchResults(),
           ),
         ],
       ),
@@ -93,71 +106,91 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   Widget _buildCategoryNavBar() {
     return Container(
-      height: 90,
+      height: 70,
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 12,
+            spreadRadius: 1,
             offset: Offset(0, 2),
           ),
         ],
       ),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(horizontal: 12),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        physics: BouncingScrollPhysics(),
         itemCount: categories.length,
         itemBuilder: (context, index) {
           bool isSelected = selectedCategory == categories[index]['label'];
-          return Container(
-            margin: EdgeInsets.only(right: 12),
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  selectedCategory = categories[index]['label'];
-                });
-              },
-              child: AnimatedContainer(
-                duration: Duration(milliseconds: 200),
-                curve: Curves.easeInOut,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                decoration: BoxDecoration(
-                  color: isSelected ? primaryColor.withOpacity(0.1) : Colors.transparent,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: isSelected ? primaryColor : Colors.transparent,
-                    width: 1.5,
+          return TweenAnimationBuilder(
+            duration: Duration(milliseconds: 300),
+            tween: Tween<double>(begin: 0, end: isSelected ? 1 : 0),
+            builder: (context, double value, child) {
+              return Container(
+                margin: EdgeInsets.symmetric(horizontal: 8),
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedCategory = categories[index]['label'];
+                    });
+                  },
+                  child: AnimatedContainer(
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeOutCubic,
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Color.lerp(
+                        Colors.white,
+                        primaryColor.withOpacity(0.1),
+                        value,
+                      ),
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Color.lerp(
+                          Colors.transparent,
+                          primaryColor,
+                          value,
+                        )!,
+                        width: 1.5,
+                      ),
+                    ),
+                    child: Transform.scale(
+                      scale: 1 + (value * 0.1),
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Color.lerp(
+                            Colors.grey[50],
+                            primaryColor,
+                            value,
+                          ),
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: primaryColor.withOpacity(0.2 * value),
+                              blurRadius: 8 * value,
+                              spreadRadius: 2 * value,
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          categories[index]['icon'],
+                          color: Color.lerp(
+                            Colors.grey[600],
+                            Colors.white,
+                            value,
+                          ),
+                          size: 24,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: isSelected ? primaryColor : Colors.grey[100],
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        categories[index]['icon'],
-                        color: isSelected ? Colors.white : Colors.grey[700],
-                        size: 20,
-                      ),
-                    ),
-                    SizedBox(height: 6),
-                    Text(
-                      categories[index]['label'],
-                      style: TextStyle(
-                        color: isSelected ? primaryColor : Colors.grey[700],
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+              );
+            },
           );
         },
       ),
@@ -244,6 +277,88 @@ class _CategoryScreenState extends State<CategoryScreen> {
           },
         ),
       ],
+    );
+  }
+
+  Widget _buildSearchResults() {
+    List<Map<String, String>> allItems = [];
+    
+    // Collect all items that match the search query
+    categoryData.forEach((category, items) {
+      if (selectedCategory == 'All' || selectedCategory == category) {
+        allItems.addAll(items.where((item) =>
+            item['name']!.toLowerCase().contains(searchQuery.toLowerCase())));
+      }
+    });
+
+    if (allItems.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.search_off,
+              size: 48,
+              color: Colors.grey[400],
+            ),
+            SizedBox(height: 16),
+            Text(
+              'No items found',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return GridView.builder(
+      padding: EdgeInsets.all(16),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 4,
+        childAspectRatio: 0.8,
+        mainAxisSpacing: 16,
+        crossAxisSpacing: 16,
+      ),
+      itemCount: allItems.length,
+      itemBuilder: (context, index) {
+        final item = allItems[index];
+        return GestureDetector(
+          onTap: () => _navigateToProducts(item['name']!),
+          child: Column(
+            children: [
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                      item['img']!,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 8),
+              Text(
+                item['name']!,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: secondaryColor,
+                  fontSize: 12,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 

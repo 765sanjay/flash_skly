@@ -221,39 +221,85 @@ class _ProductsPageState extends State<ProductsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[50], // Light background for better contrast
       appBar: AppBar(
         title: _showSearch
-            ? TextField(
-          controller: _searchController,
-          autofocus: true,
-          decoration: InputDecoration(
-            hintText: 'Search in ${widget.category}',
-            border: InputBorder.none,
-            hintStyle: TextStyle(color: widget.secondaryColor.withOpacity(0.5)),
-          ),
-          style: TextStyle(color: widget.secondaryColor),
-        )
-            : Text(widget.category, style: TextStyle(color: widget.secondaryColor)),
+            ? Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: TextField(
+                  controller: _searchController,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search, color: widget.secondaryColor),
+                    hintText: 'Search in ${widget.category}',
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(
+                      color: widget.secondaryColor.withOpacity(0.5),
+                      fontSize: 14,
+                    ),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  ),
+                  style: TextStyle(color: widget.secondaryColor),
+                ),
+              )
+            : Text(
+                widget.category,
+                style: TextStyle(
+                  color: widget.secondaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 0.5,
         iconTheme: IconThemeData(color: widget.secondaryColor),
         actions: [
           IconButton(
-            icon: Icon(_showSearch ? Icons.close : Icons.search,
-                color: widget.secondaryColor),
+            icon: Icon(_showSearch ? Icons.close : Icons.search),
             onPressed: _toggleSearch,
           ),
           IconButton(
-            icon: Icon(Icons.shopping_cart, color: widget.secondaryColor),
+            icon: Stack(
+              children: [
+                Icon(Icons.shopping_cart),
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Container(
+                    padding: EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: widget.primaryColor,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    constraints: BoxConstraints(
+                      minWidth: 14,
+                      minHeight: 14,
+                    ),
+                    child: Text(
+                      '0',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 8,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ],
+            ),
             onPressed: () {},
           ),
+          SizedBox(width: 8),
         ],
       ),
       body: Column(
         children: [
-          // Banner
+          // Enhanced Banner
           Container(
-            height: 150,
+            height: 160,
             width: double.infinity,
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -262,203 +308,279 @@ class _ProductsPageState extends State<ProductsPage> {
                 end: Alignment.bottomRight,
               ),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '${widget.category.toUpperCase()}',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Best quality products available',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Shop Now >',
-                    style: TextStyle(
-                      color: widget.lightAccent,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          // Product List
-          Expanded(
-            child: _filteredProducts.isEmpty
-                ? Center(
-              child: Text(
-                'No products found',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: widget.secondaryColor,
-                ),
-              ),
-            )
-                : ListView.builder(
-              padding: const EdgeInsets.all(16.0),
-              itemCount: _filteredProducts.length,
-              itemBuilder: (context, index) {
-                return _buildProductCard(_filteredProducts[index]);
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildProductCard(Map<String, dynamic> product) {
-    return Card(
-      elevation: 2,
-      margin: EdgeInsets.only(bottom: 16),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Stack(
               children: [
-                // Product Image
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.grey[200],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      product['image'],
-                      fit: BoxFit.cover,
+                Positioned(
+                  right: -50,
+                  top: -50,
+                  child: Container(
+                    width: 200,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.1),
+                      shape: BoxShape.circle,
                     ),
                   ),
                 ),
-                SizedBox(width: 12),
-                // Product Details
-                Expanded(
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Discount badge
+                      Text(
+                        widget.category.toUpperCase(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                      SizedBox(height: 12),
+                      Text(
+                        'Best quality products available',
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.9),
+                          fontSize: 16,
+                        ),
+                      ),
+                      SizedBox(height: 16),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                         decoration: BoxDecoration(
-                          color: widget.primaryColor,
-                          borderRadius: BorderRadius.circular(4),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
-                          product['discount'],
+                          'Shop Now',
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
+                            color: widget.primaryColor,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                      SizedBox(height: 8),
-                      // Product name
-                      Text(
-                        product['name'],
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: widget.secondaryColor,
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      // Brand
-                      Text(
-                        product['brand'],
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      // Price
-                      Row(
-                        children: [
-                          Text(
-                            product['price'],
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: widget.secondaryColor,
-                            ),
-                          ),
-                          SizedBox(width: 8),
-                          Text(
-                            product['originalPrice'],
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
-                              decoration: TextDecoration.lineThrough,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 8),
-                      // Rating and delivery
-                      Row(
-                        children: [
-                          Icon(Icons.star, color: widget.accentColor, size: 16),
-                          SizedBox(width: 4),
-                          Text(
-                            '${product['rating']} (${product['reviews']})',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          Spacer(),
-                          Text(
-                            product['delivery'],
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: widget.primaryColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 12),
-            // Add to cart button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: widget.secondaryColor,
-                  backgroundColor: widget.accentColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+          ),
+          // Enhanced Product List
+          Expanded(
+            child: _filteredProducts.isEmpty
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.search_off,
+                          size: 48,
+                          color: Colors.grey[400],
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          'No products found',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : ListView.builder(
+                    padding: const EdgeInsets.all(16.0),
+                    itemCount: _filteredProducts.length,
+                    itemBuilder: (context, index) {
+                      return _buildProductCard(_filteredProducts[index]);
+                    },
                   ),
-                  padding: EdgeInsets.symmetric(vertical: 12),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: widget.primaryColor,
+        child: Icon(Icons.shopping_cart),
+      ),
+    );
+  }
+
+  Widget _buildProductCard(Map<String, dynamic> product) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Left side - Product Image
+            ClipRRect(
+              borderRadius: BorderRadius.horizontal(left: Radius.circular(16)),
+              child: Stack(
+                children: [
+                  Container(
+                    width: 140,
+                    height: double.infinity,
+                    child: Image.asset(
+                      product['image'],
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Positioned(
+                    top: 8,
+                    left: 8,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: widget.primaryColor,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        product['discount'],
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Right side - Product Details
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Brand and Rating
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          product['brand'],
+                          style: TextStyle(
+                            color: widget.primaryColor,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 13,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Icon(Icons.star, color: Colors.amber, size: 16),
+                            SizedBox(width: 2),
+                            Text(
+                              '${product['rating']}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                              ),
+                            ),
+                            Text(
+                              ' (${product['reviews']})',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 11,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8),
+                    // Product Name
+                    Text(
+                      product['name'],
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: widget.secondaryColor,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    // Price
+                    Row(
+                      children: [
+                        Text(
+                          product['price'],
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: widget.primaryColor,
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Text(
+                          product['originalPrice'],
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8),
+                    // Delivery Time
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.access_time,
+                          size: 14,
+                          color: Colors.grey[600],
+                        ),
+                        SizedBox(width: 4),
+                        Text(
+                          product['delivery'],
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 12),
+                    // Add to Cart Button
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: widget.primaryColor,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                            ),
+                            child: Text(
+                              'Add to Cart',
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                onPressed: () {},
-                child: Text('Add to Cart'),
               ),
             ),
           ],
