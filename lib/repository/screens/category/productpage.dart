@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:skly_flash/repository/providers/cart_provider.dart';
 
 class ProductsPage extends StatefulWidget {
   final String category;
@@ -559,7 +561,29 @@ class _ProductsPageState extends State<ProductsPage> {
                       children: [
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              final price = double.parse(product['price'].replaceAll(RegExp(r'[^0-9.]'), ''));
+                              final productId = '${product['name']}_${DateTime.now().millisecondsSinceEpoch}';
+                              Provider.of<CartProvider>(context, listen: false).addItem(
+                                productId,
+                                product['name'],
+                                product['brand'],
+                                price,
+                                product['image'],
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Added to cart!'),
+                                  duration: Duration(seconds: 2),
+                                  action: SnackBarAction(
+                                    label: 'UNDO',
+                                    onPressed: () {
+                                      Provider.of<CartProvider>(context, listen: false).removeItem(productId);
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: widget.primaryColor,
                               foregroundColor: Colors.white,

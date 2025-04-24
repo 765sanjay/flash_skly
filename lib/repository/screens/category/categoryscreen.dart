@@ -230,9 +230,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
           padding: EdgeInsets.all(8),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 4,
-            childAspectRatio: 0.8,
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 8,
+            childAspectRatio: 0.85,
+            mainAxisSpacing: 12,
+            crossAxisSpacing: 12,
           ),
           itemCount: filteredItems.length,
           itemBuilder: (context, index) {
@@ -242,34 +242,37 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 _navigateToProducts(item['name']!);
               },
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    height: 70,
-                    width: 70,
+                    height: 65,
+                    width: 65,
                     decoration: BoxDecoration(
                       color: Colors.grey[100],
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: item['img'] != null
                         ? ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.asset(
-                        item['img']!,
-                        fit: BoxFit.cover,
-                      ),
-                    )
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.asset(
+                              item['img']!,
+                              fit: BoxFit.cover,
+                            ),
+                          )
                         : Icon(Icons.category, color: primaryColor, size: 40),
                   ),
                   SizedBox(height: 4),
-                  Text(
-                    item['name']!,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: secondaryColor,
-                      fontSize: 12,
+                  Flexible(
+                    child: Text(
+                      item['name']!,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: secondaryColor,
+                        fontSize: 11,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
@@ -318,7 +321,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       padding: EdgeInsets.all(16),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4,
-        childAspectRatio: 0.8,
+        childAspectRatio: 0.85,
         mainAxisSpacing: 16,
         crossAxisSpacing: 16,
       ),
@@ -328,32 +331,35 @@ class _CategoryScreenState extends State<CategoryScreen> {
         return GestureDetector(
           onTap: () => _navigateToProducts(item['name']!),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      item['img']!,
-                      fit: BoxFit.cover,
-                    ),
+              Container(
+                height: 65,
+                width: 65,
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(
+                    item['img']!,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
-              SizedBox(height: 8),
-              Text(
-                item['name']!,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: secondaryColor,
-                  fontSize: 12,
+              SizedBox(height: 4),
+              Flexible(
+                child: Text(
+                  item['name']!,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: secondaryColor,
+                    fontSize: 11,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
