@@ -1,34 +1,61 @@
 import 'dart:async';
-
+import 'package:flutter/material.dart';
 import 'package:skly_flash/domain/constants/appcolors.dart';
 import 'package:skly_flash/repository/screens/login/loginscreen.dart';
 import 'package:skly_flash/repository/widgets/uihelper.dart';
-import 'package:flutter/material.dart';
 
-class SplashScreen extends StatefulWidget{
+class SplashScreen extends StatefulWidget {
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool _imageError = false;
+
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3),(){
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+    print('SplashScreen initialized');
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Timer(Duration(seconds: 3), () {
+        print('Navigating to LoginScreen');
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => LoginScreen()),
+          );
+        }
+      });
     });
   }
+
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
-     backgroundColor: AppColors.scaffoldbackgroud,
-     body: Center(
-       child: Column(
-         mainAxisAlignment: MainAxisAlignment.center,
-         children: [
-         UiHelper.CustomImage(img: "preload.jpeg"),
-       ],),
-     ),
-   );
+    return Scaffold(
+      backgroundColor: AppColors.scaffoldbackgroud,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _imageError
+                ? Icon(Icons.error, size: 100, color: Colors.red)
+                : Image.asset(
+              "assets/preload.jpeg", // Make sure this path is correct
+              errorBuilder: (context, error, stackTrace) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (mounted) {
+                    setState(() {
+                      _imageError = true;
+                    });
+                  }
+                });
+                return Icon(Icons.error, size: 100, color: Colors.red);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

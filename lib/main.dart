@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skly_flash/repository/providers/cart_provider.dart';
+import 'package:skly_flash/repository/screens/splash/splashscreen.dart'; // Import splash screen
 import 'package:skly_flash/repository/screens/bottomnav/bottomnavscreen.dart';
 
 void main() {
@@ -19,7 +20,10 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.teal,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: BottomNavScreen(),
+        home: SplashScreen(), // Start with splash screen
+        routes: {
+          '/home': (context) => BottomNavScreen(), // Define route for home
+        },
       ),
     );
   }
