@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         ),
         home: SplashScreen(), // Start with splash screen
         routes: {
-          '/home': (context) => BottomNavScreen(), // Define route for home
+          '/home': (context) => BottomNavScreen(initialIndex: 0), // Define route for home
         },
       ),
     );

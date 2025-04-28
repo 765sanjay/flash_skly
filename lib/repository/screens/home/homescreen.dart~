@@ -172,16 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontfamily: "bold",
                   ),
                   TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BottomNavScreen(
-                            initialIndex: 3, // Index for OfferScreen
-                          ),
-                        ),
-                      );
-                    },
+                    onPressed: () {},
                     child: UiHelper.CustomText(
                       text: "See all",
                       color: primaryColor,

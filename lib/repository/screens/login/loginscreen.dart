@@ -107,14 +107,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => BottomNavScreen(),
+                                  builder: (context) => BottomNavScreen(initialIndex: 0),
                                 ),
                               );
                             } else if (showPhoneField) {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => BottomNavScreen(),
+                                  builder: (context) => BottomNavScreen(initialIndex: 0),
                                 ),
                               );
                             } else {

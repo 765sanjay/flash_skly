@@ -6,21 +6,12 @@ import 'package:skly_flash/repository/screens/print/offerscreen.dart';
 import 'package:skly_flash/repository/screens/profile/profilescreen.dart';
 
 class BottomNavScreen extends StatefulWidget {
-  final int initialIndex;
-
-  BottomNavScreen({required this.initialIndex});
-
   @override
   State<BottomNavScreen> createState() => _BottomNavScreenState();
 }
-class _BottomNavScreenState extends State<BottomNavScreen> {
-  late int currentIndex;
 
-  @override
-  void initState() {
-    super.initState();
-    currentIndex = widget.initialIndex;
-  }
+class _BottomNavScreenState extends State<BottomNavScreen> {
+  int currentIndex = 0;
 
   // Enhanced color palette
   final Color primaryColor = Color(0xFF009085);    // Teal

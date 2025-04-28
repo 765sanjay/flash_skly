@@ -88,15 +88,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
           Expanded(
             child: searchQuery.isEmpty
                 ? SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        _buildCategorySection("Grocery & Kitchen"),
-                        _buildCategorySection("Snacks & Drinks"),
-                        _buildCategorySection("Beauty & Personal Care"),
-                        _buildCategorySection("Electronics & Accessories"),
-                      ],
-                    ),
-                  )
+              child: Column(
+                children: [
+                  _buildCategorySection("Grocery & Kitchen"),
+                  _buildCategorySection("Snacks & Drinks"),
+                  _buildCategorySection("Beauty & Personal Care"),
+                  _buildCategorySection("Electronics & Accessories"),
+                ],
+              ),
+            )
                 : _buildSearchResults(),
           ),
         ],
@@ -253,12 +253,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     ),
                     child: item['img'] != null
                         ? ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              item['img']!,
-                              fit: BoxFit.cover,
-                            ),
-                          )
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.asset(
+                        item['img']!,
+                        fit: BoxFit.cover,
+                      ),
+                    )
                         : Icon(Icons.category, color: primaryColor, size: 40),
                   ),
                   SizedBox(height: 4),
@@ -285,7 +285,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   Widget _buildSearchResults() {
     List<Map<String, String>> allItems = [];
-    
+
     // Collect all items that match the search query
     categoryData.forEach((category, items) {
       if (selectedCategory == 'All' || selectedCategory == category) {
