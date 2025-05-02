@@ -9,25 +9,63 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  int _selectedIndex = 2;
-
   final Color primaryColor = const Color(0xFF009085);
   final Color secondaryColor = const Color(0xFF2F4858);
-  final Color accentColor = const Color(0xFFF6C445);
-  final Color darkAccent = const Color(0xFF006B7C);
-  final Color lightAccent = const Color(0xFFFDD90D);
 
   Future<void> _handleLogout(BuildContext context) async {
-    // Close any open dialogs or drawers first
+    // First, pop any open dialogs or overlays
     Navigator.of(context, rootNavigator: true).popUntil((route) => route.isFirst);
 
-    // Use a post-frame callback to ensure clean navigation
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-            (Route<dynamic> route) => false,
+    // Show confirmation dialog
+    final confirmed = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirm Logout'),
+        content: const Text('Are you sure you want to sign out?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text(
+              'Logout',
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      // Show logout success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Logged out successfully'),
+          duration: Duration(seconds: 1),
+        ),
       );
-    });
+
+      // Use a post-frame callback to ensure clean navigation
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        // Get the root navigator
+        NavigatorState rootNavigator = Navigator.of(
+          context,
+          rootNavigator: true,
+        );
+
+        // Clear all routes and push login screen
+        rootNavigator.pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => const LoginScreen(),
+            settings: const RouteSettings(name: '/login'),
+          ),
+              (route) => false,
+        );
+      });
+    }
   }
 
   @override

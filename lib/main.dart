@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:skly_flash/repository/providers/cart_provider.dart';
 import 'package:skly_flash/repository/screens/splash/splashscreen.dart'; // Import splash screen
 import 'package:skly_flash/repository/screens/bottomnav/bottomnavscreen.dart';
+import 'package:skly_flash/repository/providers/address_provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,8 +12,11 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (ctx) => CartProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => AddressProvider()),
+      ],
       child: MaterialApp(
         title: 'Blinkit Clone',
         debugShowCheckedModeBanner: false,

@@ -447,182 +447,6 @@ class NotificationsPage extends StatelessWidget {
   }
 }
 
-// Delivery Address Expansion
-class DeliveryAddressExpansion extends StatefulWidget {
-  const DeliveryAddressExpansion({super.key});
-
-  @override
-  State<DeliveryAddressExpansion> createState() =>
-      _DeliveryAddressExpansionState();
-}
-
-class _DeliveryAddressExpansionState extends State<DeliveryAddressExpansion> {
-  bool _expanded = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return ExpansionTile(
-      title: const Text('Delivery Addresses'),
-      leading: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: const Color(0xFF006B7C).withOpacity(0.2),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: const Icon(
-          Icons.location_on_outlined,
-          color: Color(0xFF006B7C),
-        ),
-      ),
-      trailing: Icon(
-        _expanded ? Icons.expand_less : Icons.expand_more,
-        color: Colors.grey,
-      ),
-      onExpansionChanged: (expanded) {
-        setState(() {
-          _expanded = expanded;
-        });
-      },
-      children: [
-        _buildAddressItem(
-          'Home',
-          '123 Main St, Apt 4B\nNew York, NY 10001\nUnited States',
-          true,
-        ),
-        _buildAddressItem(
-          'Work',
-          '456 Business Ave, Floor 12\nNew York, NY 10005\nUnited States',
-          false,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-          child: TextButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.add, color: Color(0xFF009085)),
-            label: const Text(
-              'Add New Address',
-              style: TextStyle(color: Color(0xFF009085)),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildAddressItem(String type, String address, bool isDefault) {
-    return ListTile(
-      title: Row(
-        children: [
-          Text(
-            type,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          if (isDefault) ...[
-            const SizedBox(width: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              decoration: BoxDecoration(
-                color: Colors.green.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: const Text(
-                'Default',
-                style: TextStyle(
-                  color: Colors.green,
-                  fontSize: 12,
-                ),
-              ),
-            ),
-          ],
-        ],
-      ),
-      subtitle: Text(address),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.edit, size: 20),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.delete, size: 20),
-            onPressed: () {},
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// Help Center Expansion
-class HelpCenterExpansion extends StatefulWidget {
-  const HelpCenterExpansion({super.key});
-
-  @override
-  State<HelpCenterExpansion> createState() => _HelpCenterExpansionState();
-}
-
-class _HelpCenterExpansionState extends State<HelpCenterExpansion> {
-  bool _expanded = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return ExpansionTile(
-      title: const Text('Help Center'),
-      leading: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: const Color(0xFF2F4858).withOpacity(0.2),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: const Icon(
-          Icons.help_outline,
-          color: Color(0xFF2F4858),
-        ),
-      ),
-      trailing: Icon(
-        _expanded ? Icons.expand_less : Icons.expand_more,
-        color: Colors.grey,
-      ),
-      onExpansionChanged: (expanded) {
-        setState(() {
-          _expanded = expanded;
-        });
-      },
-      children: [
-        ListTile(
-          leading: const Icon(Icons.phone, color: Color(0xFF009085)),
-          title: const Text('Contact Us'),
-          subtitle: const Text('+1 (800) 123-4567'),
-          onTap: () {},
-        ),
-        ListTile(
-          leading: const Icon(Icons.email, color: Color(0xFF009085)),
-          title: const Text('Email Support'),
-          subtitle: const Text('support@freshcart.com'),
-          onTap: () {},
-        ),
-        ListTile(
-          leading: const Icon(Icons.chat, color: Color(0xFF009085)),
-          title: const Text('Live Chat'),
-          subtitle: const Text('Available 9AM-5PM EST'),
-          onTap: () {},
-        ),
-        ListTile(
-          leading: const Icon(Icons.feedback, color: Color(0xFF009085)),
-          title: const Text('Feedback'),
-          onTap: () {},
-        ),
-        ListTile(
-          leading: const Icon(Icons.help_center, color: Color(0xFF009085)),
-          title: const Text('FAQs'),
-          onTap: () {},
-        ),
-      ],
-    );
-  }
-}
-
 // Main Profile Page
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -635,6 +459,20 @@ class _ProfilePageState extends State<ProfilePage> {
   String fullName = 'Sarah Johnson';
   String email = 'sarah.johnson@example.com';
   String phoneNumber = '+1 (555) 123-4567';
+  List<Map<String, String>> addresses = [
+    {
+      'name': 'Home',
+      'address': '123 Main St, Apt 4B\nNew York, NY 10001\nUnited States',
+      'phone': '+1234567890',
+      'isDefault': 'true'
+    },
+    {
+      'name': 'Work',
+      'address': '456 Business Ave, Floor 12\nNew York, NY 10005\nUnited States',
+      'phone': '+0987654321',
+      'isDefault': 'false'
+    },
+  ];
 
   void _showEditProfileBottomSheet() {
     final nameController = TextEditingController(text: fullName);
@@ -807,6 +645,111 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  void _showAddEditAddressDialog(BuildContext context,
+      {Map<String, String>? initialAddress, int? index}) {
+
+    final nameController = TextEditingController(text: initialAddress?['name'] ?? '');
+    final addressController = TextEditingController(text: initialAddress?['address'] ?? '');
+    final phoneController = TextEditingController(text: initialAddress?['phone'] ?? '');
+    bool isDefault = initialAddress?['isDefault'] == 'true';
+
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) {
+          return AlertDialog(
+            title: Text(initialAddress == null ? 'Add New Address' : 'Edit Address'),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: nameController,
+                    decoration: const InputDecoration(labelText: 'Name (e.g., Home, Work)'),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: addressController,
+                    decoration: const InputDecoration(labelText: 'Full Address'),
+                    maxLines: 3,
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: phoneController,
+                    decoration: const InputDecoration(labelText: 'Phone Number'),
+                    keyboardType: TextInputType.phone,
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: isDefault,
+                        onChanged: (value) {
+                          setState(() {
+                            isDefault = value ?? false;
+                          });
+                        },
+                        activeColor: const Color(0xFF009085),
+                      ),
+                      const Text('Set as default address'),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  final newAddress = {
+                    'name': nameController.text,
+                    'address': addressController.text,
+                    'phone': phoneController.text,
+                    'isDefault': isDefault.toString(),
+                  };
+
+                  setState(() {
+                    if (initialAddress == null) {
+                      // Add new address
+                      addresses.add(newAddress);
+                    } else {
+                      // Update existing address
+                      addresses[index!] = newAddress;
+                    }
+
+                    // If this is set as default, unset others
+                    if (isDefault) {
+                      for (var addr in addresses) {
+                        if (addr != newAddress) {
+                          addr['isDefault'] = 'false';
+                        }
+                      }
+                    }
+                  });
+
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Address ${initialAddress == null ? 'added' : 'updated'}'),
+                      backgroundColor: const Color(0xFF009085),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF009085),
+                ),
+                child: const Text('Save'),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -945,7 +888,100 @@ class _ProfilePageState extends State<ProfilePage> {
                       color: const Color(0xFF009085),
                       title: 'Delivery Addresses',
                       subtitle: 'Manage delivery locations',
-                      onTap: () {},
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Delivery Addresses'),
+                              content: SizedBox(
+                                width: double.maxFinite,
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: addresses.length + 1,
+                                  itemBuilder: (context, index) {
+                                    if (index == addresses.length) {
+                                      return ListTile(
+                                        leading: const Icon(Icons.add),
+                                        title: const Text('Add new address'),
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                          _showAddEditAddressDialog(context);
+                                        },
+                                      );
+                                    }
+
+                                    var address = addresses[index];
+                                    return Column(
+                                      children: [
+                                        ListTile(
+                                          leading: const Icon(Icons.location_on),
+                                          title: Text(address['name'] ?? ''),
+                                          subtitle: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(address['address'] ?? ''),
+                                              if (address['isDefault'] == 'true')
+                                                const Text(
+                                                  'Default',
+                                                  style: TextStyle(
+                                                    color: Colors.green,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                            ],
+                                          ),
+                                          trailing: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              IconButton(
+                                                icon: const Icon(Icons.edit),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                  _showAddEditAddressDialog(
+                                                    context,
+                                                    initialAddress: address,
+                                                    index: index,
+                                                  );
+                                                },
+                                              ),
+                                              IconButton(
+                                                icon: const Icon(Icons.delete),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    addresses.removeAt(index);
+                                                  });
+                                                  Navigator.pop(context);
+                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                    const SnackBar(
+                                                      content: Text('Address deleted'),
+                                                      backgroundColor: Colors.red,
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                content: Text('Selected: ${address['name']}'),
+                                                backgroundColor: const Color(0xFF009085),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                        const Divider(height: 1),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
                     ),
                     _buildMenuItem(
                       icon: Icons.payment_outlined,
@@ -1015,7 +1051,37 @@ class _ProfilePageState extends State<ProfilePage> {
                       color: Colors.red,
                       title: 'Logout',
                       subtitle: 'Sign out from your account',
-                      onTap: () {},
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Logout'),
+                            content: const Text('Are you sure you want to logout?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  // Handle logout logic
+                                  Navigator.pop(context);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Logged out successfully'),
+                                      backgroundColor: Colors.green,
+                                    ),
+                                  );
+                                },
+                                child: const Text(
+                                  'Logout',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
                   ]),
                   const SizedBox(height: 24),
