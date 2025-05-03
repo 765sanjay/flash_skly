@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/profile_provider.dart';
 
 void main() {
   runApp(const GroceryApp());
@@ -625,6 +628,7 @@ class _ProfilePageState extends State<ProfilePage> {
     required String label,
     required IconData icon,
     TextInputType? keyboardType,
+    int? maxLines,
   }) {
     return Container(
       decoration: BoxDecoration(
@@ -641,109 +645,148 @@ class _ProfilePageState extends State<ProfilePage> {
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           labelStyle: TextStyle(color: Colors.grey[600]),
         ),
+        maxLines: maxLines,
       ),
     );
   }
 
   void _showAddEditAddressDialog(BuildContext context,
       {Map<String, String>? initialAddress, int? index}) {
-
     final nameController = TextEditingController(text: initialAddress?['name'] ?? '');
     final addressController = TextEditingController(text: initialAddress?['address'] ?? '');
     final phoneController = TextEditingController(text: initialAddress?['phone'] ?? '');
     bool isDefault = initialAddress?['isDefault'] == 'true';
 
-    showDialog(
+    showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
       builder: (context) => StatefulBuilder(
         builder: (context, setState) {
-          return AlertDialog(
-            title: Text(initialAddress == null ? 'Add New Address' : 'Edit Address'),
-            content: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    controller: nameController,
-                    decoration: const InputDecoration(labelText: 'Name (e.g., Home, Work)'),
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: addressController,
-                    decoration: const InputDecoration(labelText: 'Full Address'),
-                    maxLines: 3,
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: phoneController,
-                    decoration: const InputDecoration(labelText: 'Phone Number'),
-                    keyboardType: TextInputType.phone,
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: isDefault,
-                        onChanged: (value) {
-                          setState(() {
-                            isDefault = value ?? false;
-                          });
+          return Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          initialAddress == null ? 'Add New Address' : 'Edit Address',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF2F4858),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: const Icon(Icons.close),
+                          color: Colors.grey,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    _buildTextField(
+                      controller: nameController,
+                      label: 'Name (e.g., Home, Work)',
+                      icon: Icons.location_on_outlined,
+                    ),
+                    const SizedBox(height: 16),
+                    _buildTextField(
+                      controller: addressController,
+                      label: 'Full Address',
+                      icon: Icons.location_city_outlined,
+                      maxLines: 3,
+                    ),
+                    const SizedBox(height: 16),
+                    _buildTextField(
+                      controller: phoneController,
+                      label: 'Phone Number',
+                      icon: Icons.phone_outlined,
+                      keyboardType: TextInputType.phone,
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: isDefault,
+                          onChanged: (value) {
+                            setState(() {
+                              isDefault = value ?? false;
+                            });
+                          },
+                          activeColor: const Color(0xFF009085),
+                        ),
+                        const Text('Set as default address'),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          final newAddress = {
+                            'name': nameController.text,
+                            'address': addressController.text,
+                            'phone': phoneController.text,
+                            'isDefault': isDefault.toString(),
+                          };
+
+                          final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+                          
+                          if (initialAddress == null) {
+                            // Add new address
+                            profileProvider.addAddress(newAddress);
+                            if (isDefault) {
+                              profileProvider.setDefaultAddress(profileProvider.addresses.length - 1);
+                            }
+                          } else {
+                            // Update existing address
+                            profileProvider.updateAddress(index!, newAddress);
+                            if (isDefault) {
+                              profileProvider.setDefaultAddress(index);
+                            }
+                          }
+
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Address ${initialAddress == null ? 'added' : 'updated'} successfully'),
+                              backgroundColor: const Color(0xFF009085),
+                            ),
+                          );
                         },
-                        activeColor: const Color(0xFF009085),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF009085),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text(
+                          'Save Address',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                      const Text('Set as default address'),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
             ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  final newAddress = {
-                    'name': nameController.text,
-                    'address': addressController.text,
-                    'phone': phoneController.text,
-                    'isDefault': isDefault.toString(),
-                  };
-
-                  setState(() {
-                    if (initialAddress == null) {
-                      // Add new address
-                      addresses.add(newAddress);
-                    } else {
-                      // Update existing address
-                      addresses[index!] = newAddress;
-                    }
-
-                    // If this is set as default, unset others
-                    if (isDefault) {
-                      for (var addr in addresses) {
-                        if (addr != newAddress) {
-                          addr['isDefault'] = 'false';
-                        }
-                      }
-                    }
-                  });
-
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Address ${initialAddress == null ? 'added' : 'updated'}'),
-                      backgroundColor: const Color(0xFF009085),
-                    ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF009085),
-                ),
-                child: const Text('Save'),
-              ),
-            ],
           );
         },
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/cart_provider.dart';
+import '../../providers/profile_provider.dart';
 import '../../widgets/uihelper.dart';
 
 class CheckoutScreen extends StatelessWidget {
@@ -16,8 +17,10 @@ class CheckoutScreen extends StatelessWidget {
         backgroundColor: primaryColor,
         foregroundColor: Colors.white,
       ),
-      body: Consumer<CartProvider>(
-        builder: (ctx, cart, child) {
+      body: Consumer2<CartProvider, ProfileProvider>(
+        builder: (ctx, cart, profile, child) {
+          final defaultAddress = profile.defaultAddress;
+          
           return Column(
             children: [
               // Delivery Address Section
@@ -64,7 +67,7 @@ class CheckoutScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     // Display default address from profile
-                    _buildAddressCard(),
+                    _buildAddressCard(defaultAddress),
                   ],
                 ),
               ),
@@ -130,7 +133,7 @@ class CheckoutScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAddressCard() {
+  Widget _buildAddressCard(Map<String, String> address) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -142,7 +145,7 @@ class CheckoutScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'John Doe', // Replace with actual name from profile
+            address['name'] ?? 'No Name',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: secondaryColor,
@@ -150,15 +153,11 @@ class CheckoutScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            '123 Main Street',
+            address['address'] ?? 'No Address',
             style: TextStyle(color: secondaryColor.withOpacity(0.8)),
           ),
           Text(
-            'New York, NY 10001',
-            style: TextStyle(color: secondaryColor.withOpacity(0.8)),
-          ),
-          Text(
-            '+1 (555) 123-4567',
+            address['phone'] ?? 'No Phone',
             style: TextStyle(color: secondaryColor.withOpacity(0.8)),
           ),
         ],
