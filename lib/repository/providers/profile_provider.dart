@@ -19,16 +19,28 @@ class ProfileProvider with ChangeNotifier {
     },
   ];
 
+  // Fields for saved addresses and selected address
+  late List<String> _savedAddresses;
+  String _selectedAddress = '';
+
+  // Constructor to initialize saved addresses
+  ProfileProvider() {
+    _savedAddresses = _addresses.map((addr) => addr['address'] ?? '').toList();
+    _selectedAddress = defaultAddress['address'] ?? '';
+  }
+
   // Getters
   String get fullName => _fullName;
   String get email => _email;
   String get phoneNumber => _phoneNumber;
   List<Map<String, String>> get addresses => [..._addresses];
+  List<String> get savedAddresses => _savedAddresses;
+  String get selectedAddress => _selectedAddress;
 
   // Get default address
   Map<String, String> get defaultAddress {
     return _addresses.firstWhere(
-      (addr) => addr['isDefault'] == 'true',
+          (addr) => addr['isDefault'] == 'true',
       orElse: () => _addresses.first,
     );
   }
@@ -47,12 +59,14 @@ class ProfileProvider with ChangeNotifier {
 
   void addAddress(Map<String, String> address) {
     _addresses.add(address);
+    _savedAddresses.add(address['address'] ?? '');
     notifyListeners();
   }
 
   void updateAddress(int index, Map<String, String> address) {
     if (index >= 0 && index < _addresses.length) {
       _addresses[index] = address;
+      _savedAddresses[index] = address['address'] ?? '';
       notifyListeners();
     }
   }
@@ -60,20 +74,39 @@ class ProfileProvider with ChangeNotifier {
   void removeAddress(int index) {
     if (index >= 0 && index < _addresses.length) {
       _addresses.removeAt(index);
+      _savedAddresses.removeAt(index);
       notifyListeners();
     }
   }
 
   void setDefaultAddress(int index) {
-    for (var i = 0; i < _addresses.length; i++) {
-      _addresses[i]['isDefault'] = (i == index).toString();
+    if (index >= 0 && index < _addresses.length) {
+      for (var i = 0; i < _addresses.length; i++) {
+        _addresses[i]['isDefault'] = (i == index).toString();
+      }
+      _selectedAddress = _addresses[index]['address'] ?? '';
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   // Method to update the entire addresses list
   void updateAddresses(List<Map<String, String>> newAddresses) {
     _addresses = [...newAddresses];
+    _savedAddresses = newAddresses.map((addr) => addr['address'] ?? '').toList();
+    _selectedAddress = defaultAddress['address'] ?? '';
     notifyListeners();
   }
-} 
+
+  // Methods for saved addresses and selected address
+  void updateSavedAddresses(List<String> addresses) {
+    _savedAddresses = addresses;
+    notifyListeners();
+  }
+
+  void updateSelectedAddress(String address) {
+    if (_savedAddresses.contains(address)) {
+      _selectedAddress = address;
+      notifyListeners();
+    }
+  }
+}

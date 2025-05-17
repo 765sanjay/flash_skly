@@ -1,3 +1,4 @@
+import 'package:provider/provider.dart';
 import 'package:skly_flash/repository/widgets/uihelper.dart';
 import 'package:flutter/material.dart';
 import 'package:skly_flash/repository/app_header.dart';
@@ -6,10 +7,13 @@ import 'package:skly_flash/repository/screens/category/productpage.dart';
 import 'package:skly_flash/repository/screens/profile/profilepage.dart';
 import 'package:skly_flash/repository/screens/bottomnav/bottomnavscreen.dart';
 
+import '../../providers/profile_provider.dart';
+
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
+
 
 class _HomeScreenState extends State<HomeScreen> {
   TextEditingController searchController = TextEditingController();
@@ -61,6 +65,24 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             AppHeader(searchController: searchController),
+
+
+            // Image Section
+            GestureDetector(
+              onTap: () {
+                _navigateToProducts(context, "Icecreams and More");
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Image.asset(
+                  "assets/images/icecream.jpeg", // Replace with your image path
+                  width: screenWidth,
+                  height: screenHeight * 0.2,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+
 
             // Categories Section
             Padding(
@@ -157,6 +179,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
             ),
+
+
 
             // Featured Products Section
             Padding(
@@ -294,6 +318,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
+
+
             // Special Offers Banner
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -360,6 +386,27 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  void _showAddressDropdown(BuildContext context, ProfileProvider profileProvider) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return ListView.builder(
+          itemCount: profileProvider.savedAddresses.length,
+          itemBuilder: (context, index) {
+            final address = profileProvider.savedAddresses[index];
+            return ListTile(
+              title: Text(address),
+              onTap: () {
+                profileProvider.updateSelectedAddress(address);
+                Navigator.pop(context);
+              },
+            );
+          },
+        );
+      },
     );
   }
 

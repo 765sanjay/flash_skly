@@ -38,12 +38,13 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     secondaryColor,  // Profile
   ];
 
+  @override
   late final List<Widget> pages = [
     HomeScreen(),
-    CartScreen(),
+    OffersScreen(),   // Replace with your Flash screen widget
     CategoryScreen(),
-    OffersScreen(),
-    GroceryApp(),
+    CartScreen(),
+    OrderHistoryPage(),  // Replace with your Orders screen widget
   ];
 
   @override
@@ -72,10 +73,10 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buildNavItem(0, Icons.home_rounded, "Home"),
-                _buildNavItem(1, Icons.shopping_cart_rounded, "Cart"),
+                _buildNavItem(1, Icons.flash_on_rounded, "Flash"),
                 _buildNavItem(2, Icons.category_rounded, "Categories"),
-                _buildNavItem(3, Icons.local_offer_rounded, "Offers"),
-                _buildNavItem(4, Icons.person_rounded, "Profile"),
+                _buildNavItem(3, Icons.shopping_cart_rounded, "Cart"),
+                _buildNavItem(4, Icons.list_alt_rounded, "Orders"),
               ],
             ),
           ),

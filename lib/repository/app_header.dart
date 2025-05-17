@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:skly_flash/repository/providers/profile_provider.dart';
 
-class AppHeader extends StatelessWidget {
+class AppHeader extends StatefulWidget {
   final TextEditingController searchController;
 
-  // Define colors as static constants since they don't change per instance
   static const Color primaryColor = Color(0xFF009085);
   static const Color secondaryColor = Color(0xFF2F4858);
   static const Color accentColor = Color(0xFFF6C445);
@@ -16,13 +17,22 @@ class AppHeader extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _AppHeaderState createState() => _AppHeaderState();
+}
+
+class _AppHeaderState extends State<AppHeader> {
+  bool isSklyFlashSelected = true; // Toggle state
+
+  @override
   Widget build(BuildContext context) {
+    final double toggleWidth = MediaQuery.of(context).size.width * 0.45; // Adjust width dynamically
+
     return Container(
       height: 220,
       width: double.infinity,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [primaryColor, darkAccent], // Using the color constants
+          colors: [Color(0xFF009085), Color(0xFF006B7C)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -31,61 +41,120 @@ class AppHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header Row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // Toggle Bar with Highlight Box
+          Stack(
             children: [
-              Text(
-                "SKLY Flash",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+              // Highlight Box
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+                height: 30,
+                width: toggleWidth, // Use dynamic width
+                margin: EdgeInsets.only(
+                  left: isSklyFlashSelected ? 0 : toggleWidth, // Adjust position dynamically
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(15),
                 ),
               ),
-              CircleAvatar(
-                radius: 18,
-                backgroundColor: lightAccent,
-                child: Icon(
-                  Icons.person,
-                  color: secondaryColor,
-                  size: 20,
-                ),
+              // Toggle Options
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isSklyFlashSelected = true;
+                      });
+                    },
+                    child: Container(
+                      width: toggleWidth,
+                      alignment: Alignment.center,
+                      child: AnimatedDefaultTextStyle(
+                        duration: const Duration(milliseconds: 300),
+                        style: TextStyle(
+                          color: isSklyFlashSelected ? Colors.white : Colors.white70,
+                          fontWeight: FontWeight.bold,
+                          fontSize: isSklyFlashSelected ? 20 : 18,
+                        ),
+                        child: Text("SKLY Flash"),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isSklyFlashSelected = false;
+                      });
+                    },
+                    child: Container(
+                      width: toggleWidth,
+                      alignment: Alignment.center,
+                      child: AnimatedDefaultTextStyle(
+                        duration: const Duration(milliseconds: 300),
+                        style: TextStyle(
+                          color: !isSklyFlashSelected ? Colors.white : Colors.white70,
+                          fontWeight: FontWeight.bold,
+                          fontSize: !isSklyFlashSelected ? 20 : 18,
+                        ),
+                        child: Text("Flash Marketplace"),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
 
           const SizedBox(height: 8),
 
-          // Delivery Text
-          Text(
-            "8 minutes delivery",
+          // Animated Delivery Text
+          AnimatedDefaultTextStyle(
+            duration: const Duration(milliseconds: 300),
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 22,
             ),
+            child: Text(
+              isSklyFlashSelected ? "8 minutes delivery" : "Marketplace",
+            ),
           ),
+
 
           const SizedBox(height: 16),
 
-          // Location Row
-          Row(
-            children: [
-              Icon(Icons.location_on, color: lightAccent, size: 16),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  "HOME - Sujal Dave, Ratanada, Jodhpur (Raj)",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
-                  ),
-                  overflow: TextOverflow.ellipsis,
+          // Location Row with Dropdown
+          Consumer<ProfileProvider>(
+            builder: (context, profileProvider, child) {
+              return GestureDetector(
+                onTap: () {
+                  _showAddressDropdown(context, profileProvider);
+                },
+                child: Row(
+                  children: [
+                    Icon(Icons.location_on, color: AppHeader.lightAccent, size: 16),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        profileProvider.selectedAddress.isNotEmpty
+                            ? profileProvider.selectedAddress
+                            : "Select Address",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                        ),
+                        overflow: TextOverflow.ellipsis, // Truncate text with ellipsis
+                        maxLines: 1, // Limit to one line
+                      ),
+                    ),
+                    Icon(Icons.arrow_drop_down, color: Colors.white),
+                  ],
                 ),
-              ),
-            ],
+              );
+            },
           ),
 
           const Spacer(),
@@ -105,10 +174,10 @@ class AppHeader extends StatelessWidget {
               ],
             ),
             child: TextField(
-              controller: searchController,
+              controller: widget.searchController,
               decoration: InputDecoration(
                 hintText: "Search for products...",
-                prefixIcon: Icon(Icons.search, color: secondaryColor),
+                prefixIcon: Icon(Icons.search, color: AppHeader.secondaryColor),
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.symmetric(vertical: 14),
               ),
@@ -116,6 +185,27 @@ class AppHeader extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _showAddressDropdown(BuildContext context, ProfileProvider profileProvider) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return ListView.builder(
+          itemCount: profileProvider.savedAddresses.length,
+          itemBuilder: (context, index) {
+            final address = profileProvider.savedAddresses[index];
+            return ListTile(
+              title: Text(address),
+              onTap: () {
+                profileProvider.updateSelectedAddress(address);
+                Navigator.pop(context);
+              },
+            );
+          },
+        );
+      },
     );
   }
 }
