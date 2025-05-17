@@ -378,7 +378,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
           secondaryColor: secondaryColor,
           accentColor: accentColor,
           darkAccent: darkAccent,
-          lightAccent: lightAccent,
+          lightAccent: lightAccent, subcategories: [],
         ),
       ),
     );

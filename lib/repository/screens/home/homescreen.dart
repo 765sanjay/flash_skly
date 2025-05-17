@@ -173,14 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BottomNavScreen(
-                            initialIndex: 3, // Index for OfferScreen
-                          ),
-                        ),
-                      );
+                      // Removed navigation to OfferScreen
                     },
                     child: UiHelper.CustomText(
                       text: "See all",
@@ -373,7 +366,7 @@ class _HomeScreenState extends State<HomeScreen> {
           secondaryColor: secondaryColor,
           accentColor: accentColor,
           darkAccent: darkAccent,
-          lightAccent: lightAccent,
+          lightAccent: lightAccent, subcategories: [],
         ),
       ),
     );
