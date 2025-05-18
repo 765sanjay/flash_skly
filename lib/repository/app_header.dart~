@@ -104,17 +104,18 @@ class _AppHeaderState extends State<AppHeader> {
                     },
                     child: Container(
                       width: toggleWidth,
-                      height: 50, // Match the height of the white box
-                      alignment: Alignment.center, // Center the text vertically and horizontally
-                      child: AnimatedDefaultTextStyle(
-                        duration: const Duration(milliseconds: 300),
-                        style: TextStyle(
-                          color: isSklyFlashSelected ? Colors.black : Colors.grey,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22, // Larger font size
-                          fontFamily: 'Roboto', // Use a rounded font
+                      alignment: Alignment.center,
+                      child: Center( // Ensures text is centered
+                        child: AnimatedDefaultTextStyle(
+                          duration: const Duration(milliseconds: 300),
+                          style: TextStyle(
+                            color: isSklyFlashSelected ? Colors.black : Colors.grey,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22, // Larger font size
+                            fontFamily: 'Roboto', // Use a rounded font
+                          ),
+                          child: Text("SKLY Flash"),
                         ),
-                        child: Text("SKLY Flash"),
                       ),
                     ),
                   ),
@@ -126,17 +127,18 @@ class _AppHeaderState extends State<AppHeader> {
                     },
                     child: Container(
                       width: toggleWidth,
-                      height: 50, // Match the height of the white box
-                      alignment: Alignment.center, // Center the text vertically and horizontally
-                      child: AnimatedDefaultTextStyle(
-                        duration: const Duration(milliseconds: 300),
-                        style: TextStyle(
-                          color: !isSklyFlashSelected ? Colors.black : Colors.grey,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22, // Larger font size
-                          fontFamily: 'Roboto', // Use a rounded font
+                      alignment: Alignment.center,
+                      child: Center( // Ensures text is centered
+                        child: AnimatedDefaultTextStyle(
+                          duration: const Duration(milliseconds: 300),
+                          style: TextStyle(
+                            color: !isSklyFlashSelected ? Colors.black : Colors.grey,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22, // Larger font size
+                            fontFamily: 'Roboto', // Use a rounded font
+                          ),
+                          child: Text("Flash Marketplace"),
                         ),
-                        child: Text("Flash Marketplace"),
                       ),
                     ),
                   ),
