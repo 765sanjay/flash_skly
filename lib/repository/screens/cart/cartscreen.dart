@@ -369,3 +369,7 @@ class CartScreen extends StatelessWidget {
     );
   }
 }
+
+class _handleOfferTap {
+  _handleOfferTap(int index);
+}

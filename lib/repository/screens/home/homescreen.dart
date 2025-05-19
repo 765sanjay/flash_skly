@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:skly_flash/repository/app_header.dart';
 import 'package:skly_flash/repository/screens/category/categoryscreen.dart';
 import 'package:skly_flash/repository/screens/category/productpage.dart';
-import 'package:skly_flash/repository/screens/profile/profilepage.dart';
+// import 'package:skly_flash/repository/screens/profile/profilepage.dart';
 import 'package:skly_flash/repository/screens/bottomnav/bottomnavscreen.dart';
 
 class HomeScreen extends StatefulWidget {

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skly_flash/repository/providers/cart_provider.dart';
+import 'package:skly_flash/repository/screens/cart/cartscreen.dart';
+import 'package:skly_flash/repository/color_palete/color_palete.dart';
+import 'package:skly_flash/repository/screens/bottomnav/bottomnavscreen.dart';
 
 class ProductsPage extends StatefulWidget {
   final String category;
@@ -106,7 +109,7 @@ class _ProductsPageState extends State<ProductsPage> {
             'discount': '18% OFF',
             'rating': 4.2,
             'reviews': 95,
-            'image': 'assets/images/tomatoes.jpg',
+            'image': 'assets/images/tomatoes.jpeg',
             'delivery': 'Today by 8 PM'
           },
         ];
@@ -721,37 +724,7 @@ class _ProductsPageState extends State<ProductsPage> {
             icon: Icon(_showSearch ? Icons.close : Icons.search),
             onPressed: _toggleSearch,
           ),
-          IconButton(
-            icon: Stack(
-              children: [
-                Icon(Icons.shopping_cart),
-                Positioned(
-                  right: 0,
-                  top: 0,
-                  child: Container(
-                    padding: EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                      color: widget.primaryColor,
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    constraints: BoxConstraints(
-                      minWidth: 14,
-                      minHeight: 14,
-                    ),
-                    child: Text(
-                      '0',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 8,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            onPressed: () {},
-          ),
+          // Removed the shopping cart icon from here
           SizedBox(width: 8),
         ],
       ),
@@ -760,53 +733,109 @@ class _ProductsPageState extends State<ProductsPage> {
           // Left: Subcategory NavBar - only show if we have subcategories
           if (_displaySubcategories.isNotEmpty)
             Container(
-              width: 110,
-              color: Colors.grey[100],
+              width: 100, // Slightly narrower for more compact look
+              decoration: BoxDecoration(
+                color: Colors.grey[200], // Darker grey for industrial feel
+                border: Border(
+                  right: BorderSide(
+                    color: Colors.grey[400]!, // Metallic border
+                    width: 1.5,
+                  ),
+                ),
+              ),
               child: ListView.builder(
+                physics: const BouncingScrollPhysics(), // More modern scroll feel
                 itemCount: _displaySubcategories.length,
                 itemBuilder: (context, index) {
                   final subcat = _displaySubcategories[index];
                   final isSelected = subcat == _selectedSubcategory;
                   final imagePath = _subcategoryImages[subcat] ?? 'assets/images/generic_placeholder.png';
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedSubcategory = subcat;
-                        _filterProductsBySubcategory();
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                      decoration: BoxDecoration(
-                        color: isSelected ? widget.primaryColor.withOpacity(0.1) : Colors.transparent,
-                        borderRadius: BorderRadius.circular(8),
+
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? widget.primaryColor.withOpacity(0.2)
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(6),
+                      border: isSelected
+                          ? Border.all(
+                        color: widget.primaryColor,
+                        width: 1.5,
+                      )
+                          : Border.all(
+                        color: Colors.grey[400]!.withOpacity(0.3),
+                        width: 1,
                       ),
-                      child: Column(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.asset(
-                              imagePath,
-                              height: 32,
-                              width: 32,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) => Icon(Icons.image, size: 32, color: Colors.grey),
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          _selectedSubcategory = subcat;
+                          _filterProductsBySubcategory();
+                        });
+                      },
+                      splashColor: widget.primaryColor.withOpacity(0.1),
+                      highlightColor: Colors.transparent,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Industrial-style icon container
+                            Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(6),
+                                color: Colors.grey[300],
+                                border: Border.all(
+                                  color: Colors.grey[500]!,
+                                  width: 1,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 2,
+                                    offset: const Offset(1, 1),
+                                  ),
+                                ],
+                              ),
+                              child: Center(
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(4),
+                                  child: Image.asset(
+                                    imagePath,
+                                    width: 24,
+                                    height: 24,
+                                    fit: BoxFit.contain,
+                                    errorBuilder: (context, error, stackTrace) =>
+                                        Icon(Icons.category, size: 20, color: Colors.grey[700]),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            subcat,
-                            style: TextStyle(
-                              color: isSelected ? widget.primaryColor : widget.secondaryColor,
-                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                              fontSize: 12,
+                            const SizedBox(height: 8),
+                            // Industrial-style text
+                            Text(
+                              subcat,
+                              style: TextStyle(
+                                color: isSelected
+                                    ? widget.primaryColor
+                                    : Colors.grey[800],
+                                fontWeight: isSelected
+                                    ? FontWeight.bold
+                                    : FontWeight.w600,
+                                fontSize: 11,
+                                letterSpacing: 0.3,
+                              ),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            textAlign: TextAlign.center,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -815,122 +844,146 @@ class _ProductsPageState extends State<ProductsPage> {
             ),
           // Right: Product List (Expanded)
           Expanded(
-            child: Column(
-              children: [
-                // Enhanced Banner (unchanged)
-                // Container(
-                //   height: 160,
-                //   width: double.infinity,
-                //   decoration: BoxDecoration(
-                //     gradient: LinearGradient(
-                //       colors: [widget.primaryColor, widget.darkAccent],
-                //       begin: Alignment.topLeft,
-                //       end: Alignment.bottomRight,
-                //     ),
-                //   ),
-                //   // child: Stack(
-                //   //   children: [
-                //   //     Positioned(
-                //   //       right: -50,
-                //   //       top: -50,
-                //   //       child: Container(
-                //   //         width: 200,
-                //   //         height: 200,
-                //   //         decoration: BoxDecoration(
-                //   //           color: Colors.white.withOpacity(0.1),
-                //   //           shape: BoxShape.circle,
-                //   //         ),
-                //   //       ),
-                //   //     ),
-                //   //     // Padding(
-                //   //     //   padding: const EdgeInsets.all(20.0),
-                //   //     //   child: Column(
-                //   //     //     crossAxisAlignment: CrossAxisAlignment.start,
-                //   //     //     mainAxisAlignment: MainAxisAlignment.center,
-                //   //     //     children: [
-                //   //     //       Text(
-                //   //     //         widget.category.toUpperCase(),
-                //   //     //         style: TextStyle(
-                //   //     //           color: Colors.white,
-                //   //     //           fontSize: 24,
-                //   //     //           fontWeight: FontWeight.bold,
-                //   //     //           letterSpacing: 1.2,
-                //   //     //         ),
-                //   //     //       ),
-                //   //     //       SizedBox(height: 12),
-                //   //     //       Text(
-                //   //     //         'Best quality products available',
-                //   //     //         style: TextStyle(
-                //   //     //           color: Colors.white.withOpacity(0.9),
-                //   //     //           fontSize: 16,
-                //   //     //         ),
-                //   //     //       ),
-                //   //     //       // SizedBox(height: 16),
-                //   //     //       // Container(
-                //   //     //       //   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                //   //     //       //   decoration: BoxDecoration(
-                //   //     //       //     color: Colors.white,
-                //   //     //       //     borderRadius: BorderRadius.circular(20),
-                //   //     //       //   ),
-                //   //     //       //   child: Text(
-                //   //     //       //     'Shop Now',
-                //   //     //       //     style: TextStyle(
-                //   //     //       //       color: widget.primaryColor,
-                //   //     //       //       fontWeight: FontWeight.bold,
-                //   //     //       //     ),
-                //   //     //       //   ),
-                //   //     //       // ),
-                //   //     //     ],
-                //   //     //   ),
-                //   //     // ),
-                //   //   ],
-                //   // ),
-                // ),
-                // GridView Product List
-                Expanded(
-                  child: _filteredProducts.isEmpty
-                      ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.search_off,
-                          size: 48,
-                          color: Colors.grey[400],
-                        ),
-                        SizedBox(height: 16),
-                        Text(
-                          'No products found',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                      : GridView.builder(
-                    padding: const EdgeInsets.all(16.0),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, // Number of columns
-                      crossAxisSpacing: 12, // Horizontal space between items
-                      mainAxisSpacing: 12, // Vertical space between items
-                      childAspectRatio: 0.7, // Width/height ratio
-                    ),
-                    itemCount: _filteredProducts.length,
-                    itemBuilder: (context, index) {
-                      return _buildProductCard(_filteredProducts[index]);
-                    },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                border: Border(
+                  left: BorderSide(
+                    color: Colors.grey[300]!,
+                    width: 1.5,
                   ),
                 ),
-              ],
+              ),
+              child: Column(
+                children: [
+                  // Optional industrial-style header
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Colors.grey[300]!,
+                          width: 1.5,
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.grid_view, color: Colors.grey[700], size: 20),
+                        SizedBox(width: 8),
+                        Text(
+                          'PRODUCT INVENTORY',
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.2,
+                          ),
+                        ),
+                        Spacer(),
+                        // Text(
+                        //   '${_filteredProducts.length} ITEMS',
+                        //   style: TextStyle(
+                        //     color: Colors.grey[600],
+                        //     fontSize: 12,
+                        //     fontWeight: FontWeight.w600,
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                  ),
+
+                  // Product Grid
+                  Expanded(
+                    child: _filteredProducts.isEmpty
+                        ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.inventory_2_outlined,
+                            size: 48,
+                            color: Colors.grey[400],
+                          ),
+                          SizedBox(height: 16),
+                          Text(
+                            'INVENTORY EMPTY',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey[600],
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.5,
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            'No matching products found',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[500],
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                        : Container(
+                      padding: const EdgeInsets.all(12.0),
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/industrial_bg.png'), // Optional subtle texture
+                          fit: BoxFit.cover,
+                          opacity: 0.03,
+                        ),
+                      ),
+                      child: GridView.builder(
+                        physics: BouncingScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 0.68, // Slightly more compact
+                        ),
+                        itemCount: _filteredProducts.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.grey[300]!,
+                                width: 1.2,
+                              ),
+                              borderRadius: BorderRadius.circular(4),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.05),
+                                  blurRadius: 4,
+                                  offset: Offset(2, 2),
+                                ),
+                              ],
+                            ),
+                            child: _buildProductCard(_filteredProducts[index]),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
+
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: widget.primaryColor,
+        onPressed: () {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BottomNavScreen(initialIndex: 1),
+            ),
+            (route) => false,
+          );
+        },
+        backgroundColor: ColorPalette.primaryColor,
         child: Icon(Icons.shopping_cart),
       ),
     );
@@ -945,6 +998,7 @@ class _ProductsPageState extends State<ProductsPage> {
         final quantity = isInCart ? cartItem.quantity : 0;
 
         return Container(
+          height: 345, // Further increased height to fix overflow
           margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -962,257 +1016,268 @@ class _ProductsPageState extends State<ProductsPage> {
               width: 1,
             ),
           ),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Product Image with Badges
+              Stack(
                 children: [
-                  // Product Image with Badges
-                  Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(12)),
-                        child: Image.asset(
-                          product['image'],
-                          width: double.infinity,
-                          height: constraints.maxWidth * 0.8, // Dynamic height
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      // Discount Badge
-                      Positioned(
-                        top: 8,
-                        left: 8,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 6, vertical: 3),
-                          decoration: BoxDecoration(
-                            color: widget.primaryColor,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            product['discount'],
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 10,
+                  Container(
+                    height: 90, // Further reduced image height
+                    width: double.infinity,
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(12)),
+                      child: Image.asset(
+                        product['image'],
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            Container(
+                              color: Colors.grey[200],
+                              child: Icon(Icons.image, color: Colors.grey[400]),
                             ),
-                          ),
-                        ),
                       ),
-                      // Favorite Button
-                      Positioned(
-                        top: 8,
-                        right: 8,
-                        child: Container(
-                          width: 28,
-                          height: 28,
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.9),
-                            shape: BoxShape.circle,
-                          ),
-                          child: IconButton(
-                            icon: const Icon(Icons.favorite_border, size: 16),
-                            padding: EdgeInsets.zero,
-                            onPressed: () {},
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
+                  // Discount Badge
+                  Positioned(
+                    top: 8,
+                    left: 8,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: widget.primaryColor,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        product['discount'],
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ),
+                  ),
+                  // Favorite Button
+                  // Positioned(
+                  //   top: 8,
+                  //   right: 8,
+                  //   child: Container(
+                  //     width: 28,
+                  //     height: 28,
+                  //     decoration: BoxDecoration(
+                  //       color: Colors.white.withOpacity(0.9),
+                  //       shape: BoxShape.circle,
+                  //     ),
+                  //     child: IconButton(
+                  //       icon: const Icon(Icons.favorite_border, size: 16),
+                  //       padding: EdgeInsets.zero,
+                  //       onPressed: () {},
+                  //     ),
+                  //   ),
+                  // ),
+                ],
+              ),
 
-                  // Product Details
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Brand and Rating
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                product['brand'],
-                                style: TextStyle(
-                                  color: widget.primaryColor,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 10,
-                                ),
-                                overflow: TextOverflow.ellipsis,
+              // Product Details
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Brand and Rating
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              product['brand'],
+                              style: TextStyle(
+                                color: widget.primaryColor,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 10,
                               ),
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Icon(Icons.star,
-                                    color: Colors.amber, size: 14),
-                                const SizedBox(width: 2),
-                                Text(
-                                  '${product['rating']}',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 6),
-
-                        // Product Name
-                        Text(
-                          product['name'],
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: widget.secondaryColor,
-                            height: 1.3,
                           ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.star,
+                                  color: Colors.amber, size: 14),
+                              const SizedBox(width: 2),
+                              Text(
+                                '${product['rating']}',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 2),
+
+                      // Product Name
+                      Text(
+                        product['name'],
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: widget.secondaryColor,
+                          height: 1.1,
                         ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
 
-                        const SizedBox(height: 8),
+                      const SizedBox(height: 2),
 
-                        // Price
-                        Row(
-                          children: [
-                            Text(
+                      // Price
+                      Row(
+                        children: [
+                          Flexible(
+                            child: Text(
                               product['price'],
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: widget.primaryColor,
                               ),
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            const SizedBox(width: 4),
-                            Text(
+                          ),
+                          const SizedBox(width: 4),
+                          Flexible(
+                            child: Text(
                               product['originalPrice'],
                               style: TextStyle(
                                 fontSize: 10,
                                 color: Colors.grey,
                                 decoration: TextDecoration.lineThrough,
                               ),
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
+                      ),
 
-                        const SizedBox(height: 10),
+                      const Spacer(), // Pushes the button to the bottom
 
-                        // Add to Cart or Quantity Counter
-                        if (!isInCart)
-                          SizedBox(
-                            height: 32,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                final price = double.parse(product['price']
-                                    .replaceAll(RegExp(r'[^0-9.]'), ''));
-                                cartProvider.addItem(
-                                  productId,
-                                  product['name'],
-                                  product['brand'],
-                                  price,
-                                  product['image'],
-                                );
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: const Text('Added to cart!'),
-                                    duration: const Duration(seconds: 2),
-                                    behavior: SnackBarBehavior.floating,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    action: SnackBarAction(
-                                      label: 'UNDO',
-                                      textColor: Colors.white,
-                                      onPressed: () {
-                                        cartProvider.removeItem(productId);
-                                      },
-                                    ),
+                      // Add to Cart or Quantity Counter
+                      if (!isInCart)
+                        SizedBox(
+                          height: 24,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              final price = double.parse(product['price']
+                                  .replaceAll(RegExp(r'[^0-9.]'), ''));
+                              cartProvider.addItem(
+                                productId,
+                                product['name'],
+                                product['brand'],
+                                price,
+                                product['image'],
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: const Text('Added to cart!'),
+                                  duration: const Duration(seconds: 2),
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: widget.primaryColor,
-                                foregroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(6),
+                                  action: SnackBarAction(
+                                    label: 'UNDO',
+                                    textColor: Colors.white,
+                                    onPressed: () {
+                                      cartProvider.removeItem(productId);
+                                    },
+                                  ),
                                 ),
-                                padding: EdgeInsets.zero,
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: widget.primaryColor,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
                               ),
-                              child: const Text(
-                                'ADD',
-                                style: TextStyle(
+                              padding: EdgeInsets.zero,
+                            ),
+                            child: const Text(
+                              'ADD',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        )
+                      else
+                        Container(
+                          height: 24,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[100],
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: IconButton(
+                                  icon: Icon(Icons.remove, size: 16),
+                                  color: widget.primaryColor,
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () {
+                                    if (quantity > 1) {
+                                      cartProvider.decreaseQuantity(productId);
+                                    } else {
+                                      cartProvider.removeItem(productId);
+                                    }
+                                  },
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                '$quantity',
+                                style: const TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ),
-                          )
-                        else
-                          Container(
-                            height: 32,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[100],
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SizedBox(
-                                  width: 32,
-                                  height: 32,
-                                  child: IconButton(
-                                    icon: Icon(Icons.remove, size: 16),
-                                    color: widget.primaryColor,
-                                    padding: EdgeInsets.zero,
-                                    onPressed: () {
-                                      if (quantity > 1) {
-                                        cartProvider.decreaseQuantity(productId);
-                                      } else {
-                                        cartProvider.removeItem(productId);
-                                      }
-                                    },
-                                  ),
+                              const SizedBox(width: 4),
+                              SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: IconButton(
+                                  icon: Icon(Icons.add, size: 16),
+                                  color: widget.primaryColor,
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () => cartProvider.increaseQuantity(productId),
                                 ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  '$quantity',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                SizedBox(
-                                  width: 32,
-                                  height: 32,
-                                  child: IconButton(
-                                    icon: Icon(Icons.add, size: 16),
-                                    color: widget.primaryColor,
-                                    padding: EdgeInsets.zero,
-                                    onPressed: () => cartProvider.increaseQuantity(productId),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                      ],
-                    ),
+                              ),
+                            ],
+                          ),
+                        )
+                    ],
                   ),
-                ],
-              );
-            },
+                ),
+              ),
+            ],
           ),
         );
       },
     );
   }
-
   void _filterProductsBySubcategory() {
     if (_selectedSubcategory == 'All') {
       setState(() {

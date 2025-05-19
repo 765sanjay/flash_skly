@@ -1,12 +1,261 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/cart_provider.dart';
-import '../../providers/profile_provider.dart';
 import '../../widgets/uihelper.dart';
 
-class CheckoutScreen extends StatelessWidget {
+class CheckoutScreen extends StatefulWidget {
+  @override
+  _CheckoutScreenState createState() => _CheckoutScreenState();
+}
+
+class _CheckoutScreenState extends State<CheckoutScreen> {
   final Color primaryColor = const Color(0xFF009085);
   final Color secondaryColor = const Color(0xFF2F4858);
+  Map<String, String>? _selectedAddress;
+  List<Map<String, String>> _addresses = [
+    {
+      'name': 'Home',
+      'address': '123 Main St, Apt 4B\nNew York, NY 10001\nUnited States',
+      'phone': '+1234567890',
+    },
+    {
+      'name': 'Work',
+      'address': '456 Business Ave, Floor 12\nNew York, NY 10005\nUnited States',
+      'phone': '+0987654321',
+    },
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    if (_addresses.isNotEmpty) {
+      _selectedAddress = _addresses.first;
+    }
+  }
+
+  void _showAddressDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Select Delivery Address',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: secondaryColor,
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                // List of saved addresses
+                ..._addresses.map((address) => _buildAddressOption(
+                  context,
+                  address,
+                )),
+                const SizedBox(height: 16),
+                // Add new address button
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pop(context); // Close the dialog
+                    _showAddAddressDialog(context);
+                  },
+                  icon: Icon(Icons.add_location_alt),
+                  label: Text('Add New Address'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryColor,
+                    foregroundColor: Colors.white,
+                    minimumSize: Size(double.infinity, 45),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showAddAddressDialog(BuildContext context) {
+    final nameController = TextEditingController();
+    final addressController = TextEditingController();
+    final phoneController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Add New Address',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: secondaryColor,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: nameController,
+                  decoration: InputDecoration(
+                    labelText: 'Full Name',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: addressController,
+                  decoration: InputDecoration(
+                    labelText: 'Address',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  maxLines: 3,
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: phoneController,
+                  decoration: InputDecoration(
+                    labelText: 'Phone Number',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  keyboardType: TextInputType.phone,
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text('Cancel'),
+                        style: OutlinedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          final newAddress = {
+                            'name': nameController.text,
+                            'address': addressController.text,
+                            'phone': phoneController.text,
+                          };
+                          setState(() {
+                            _addresses.add(newAddress);
+                            _selectedAddress = newAddress;
+                          });
+                          Navigator.pop(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: primaryColor,
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: Text('Save'),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildAddressOption(BuildContext context, Map<String, String> address) {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _selectedAddress = address;
+        });
+        Navigator.pop(context);
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.grey[50],
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: _selectedAddress == address ? primaryColor : Colors.grey[300]!,
+            width: _selectedAddress == address ? 2 : 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    address['name'] ?? 'No Name',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: secondaryColor,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    address['address'] ?? 'No Address',
+                    style: TextStyle(color: secondaryColor.withOpacity(0.8)),
+                  ),
+                  Text(
+                    address['phone'] ?? 'No Phone',
+                    style: TextStyle(color: secondaryColor.withOpacity(0.8)),
+                  ),
+                ],
+              ),
+            ),
+            if (_selectedAddress == address)
+              Icon(Icons.check_circle, color: primaryColor),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +266,8 @@ class CheckoutScreen extends StatelessWidget {
         backgroundColor: primaryColor,
         foregroundColor: Colors.white,
       ),
-      body: Consumer2<CartProvider, ProfileProvider>(
-        builder: (ctx, cart, profile, child) {
-          final defaultAddress = profile.defaultAddress;
-          
+      body: Consumer<CartProvider>(
+        builder: (ctx, cart, child) {
           return Column(
             children: [
               // Delivery Address Section
@@ -51,10 +298,7 @@ class CheckoutScreen extends StatelessWidget {
                           ),
                         ),
                         TextButton(
-                          onPressed: () {
-                            // Navigate to profile's address management
-                            Navigator.pushNamed(context, '/personalInfo');
-                          },
+                          onPressed: () => _showAddressDialog(context),
                           child: Text(
                             'Change',
                             style: TextStyle(
@@ -66,8 +310,8 @@ class CheckoutScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 12),
-                    // Display default address from profile
-                    _buildAddressCard(defaultAddress),
+                    // Display selected address
+                    _buildAddressCard(_selectedAddress ?? _addresses.first),
                   ],
                 ),
               ),
