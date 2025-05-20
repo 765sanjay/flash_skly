@@ -32,19 +32,17 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   // Page-specific colors
   late final List<Color> pageColors = [
     primaryColor,    // Home
-    accentColor,     // Cart
     darkAccent,      // Categories
-    lightAccent,     // Offers
+    accentColor,     // Cart
     secondaryColor,  // Profile
   ];
 
   @override
   late final List<Widget> pages = [
     HomeScreen(),
-    OffersScreen(),   // Replace with your Flash screen widget
     CategoryScreen(),
     CartScreen(),
-    OrderHistoryPage(),  // Replace with your Orders screen widget
+    OrderHistoryPage(),
   ];
 
   @override
@@ -73,10 +71,9 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buildNavItem(0, Icons.home_rounded, "Home"),
-                _buildNavItem(1, Icons.flash_on_rounded, "Flash"),
-                _buildNavItem(2, Icons.category_rounded, "Categories"),
-                _buildNavItem(3, Icons.shopping_cart_rounded, "Cart"),
-                _buildNavItem(4, Icons.list_alt_rounded, "Orders"),
+                _buildNavItem(1, Icons.category_rounded, "Categories"),
+                _buildNavItem(2, Icons.shopping_cart_rounded, "Cart"),
+                _buildNavItem(3, Icons.list_alt_rounded, "Orders"),
               ],
             ),
           ),

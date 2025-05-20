@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skly_flash/repository/providers/cart_provider.dart';
 import 'package:skly_flash/repository/screens/profile/profilescreen.dart';
-import 'package:skly_flash/repository/screens/splash/splashscreen.dart'; // Import splash screen
 import 'package:skly_flash/repository/screens/bottomnav/bottomnavscreen.dart';
 import 'package:skly_flash/repository/providers/address_provider.dart';
 import 'package:skly_flash/repository/providers/profile_provider.dart';
@@ -27,9 +26,8 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.teal,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: SplashScreen(), // Start with splash screen
+        home: BottomNavScreen(initialIndex: 0),
         routes: {
-          '/home': (context) => BottomNavScreen(initialIndex: 0), // Define route for home
           '/personalInfo': (context) => const PersonalInfoPage(),
           '/orderHistory': (context) => const OrderHistoryPage(),
           '/favorites': (context) => const FavoritesPage(),

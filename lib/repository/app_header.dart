@@ -114,7 +114,7 @@ class _AppHeaderState extends State<AppHeader> {
                           fontSize: 22, // Larger font size
                           fontFamily: 'Roboto', // Use a rounded font
                         ),
-                        child: Text("SKLY Flash"),
+                        child: Text("Flash"),
                       ),
                     ),
                   ),
@@ -136,7 +136,7 @@ class _AppHeaderState extends State<AppHeader> {
                           fontSize: 22, // Larger font size
                           fontFamily: 'Roboto', // Use a rounded font
                         ),
-                        child: Text("Flash Marketplace"),
+                        child: Text("Flash Market"),
                       ),
                     ),
                   ),

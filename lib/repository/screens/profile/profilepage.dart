@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:skly_flash/repository/screens/login/loginscreen.dart';
+// import 'package:skly_flash/repository/screens/login/loginscreen.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -57,13 +57,13 @@ class _ProfilePageState extends State<ProfilePage> {
         );
 
         // Clear all routes and push login screen
-        rootNavigator.pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => const LoginScreen(),
-            settings: const RouteSettings(name: '/login'),
-          ),
-              (route) => false,
-        );
+        // rootNavigator.pushAndRemoveUntil(
+        //   MaterialPageRoute(
+        //     builder: (context) => const LoginScreen(),
+        //     settings: const RouteSettings(name: '/login'),
+        //   ),
+        //       (route) => false,
+        // );
       });
     }
   }

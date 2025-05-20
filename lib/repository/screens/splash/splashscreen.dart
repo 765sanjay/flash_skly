@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:skly_flash/domain/constants/appcolors.dart';
-import 'package:skly_flash/repository/screens/login/loginscreen.dart';
+// import 'package:skly_flash/repository/screens/login/loginscreen.dart';
 import 'package:skly_flash/repository/widgets/uihelper.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -17,17 +17,17 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     print('SplashScreen initialized');
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Timer(Duration(seconds: 3), () {
-        print('Navigating to LoginScreen');
-        if (mounted) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => LoginScreen()),
-          );
-        }
-      });
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   Timer(Duration(seconds: 3), () {
+    //     print('Navigating to LoginScreen');
+    //     if (mounted) {
+    //       Navigator.pushReplacement(
+    //         context,
+    //         MaterialPageRoute(builder: (context) => LoginScreen()),
+    //       );
+    //     }
+    //   });
+    // });
   }
 
   @override

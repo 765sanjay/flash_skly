@@ -420,7 +420,7 @@ class _HomeScreenState extends State<HomeScreen> {
           secondaryColor: secondaryColor,
           accentColor: accentColor,
           darkAccent: darkAccent,
-          lightAccent: lightAccent,
+          lightAccent: lightAccent, subcategories: [],
         ),
       ),
     );
