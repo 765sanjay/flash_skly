@@ -90,12 +90,14 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  UiHelper.CustomText(
-                    text: "Shop by Category",
-                    color: secondaryColor,
-                    fontweight: FontWeight.bold,
-                    fontsize: 18,
-                    fontfamily: "bold",
+                  Expanded(
+                    child: UiHelper.CustomText(
+                      text: "Shop by Category",
+                      color: secondaryColor,
+                      fontweight: FontWeight.bold,
+                      fontsize: 18,
+                      fontfamily: "bold",
+                    ),
                   ),
                   TextButton(
                     onPressed: () {
@@ -103,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => BottomNavScreen(
-                            initialIndex: 2, // Index for CategoryScreen
+                            initialIndex: 1,
                           ),
                         ),
                       );
@@ -118,8 +120,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            SizedBox(
+            Container(
               height: screenHeight * 0.20,
+              margin: EdgeInsets.only(bottom: 10),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -136,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Container(
                             height: screenHeight * 0.12,
-                            width: screenWidth * 0.22,
+                            width: screenWidth * 0.24, // Slightly increased for better spacing
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
                               color: grocerykitchen[index]["color"] as Color,
@@ -151,24 +154,25 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Center(
                               child: SizedBox(
                                 height: 60,
+                                width: 60,
                                 child: UiHelper.CustomImage(
                                   img: grocerykitchen[index]["img"].toString(),
                                 ),
                               ),
                             ),
                           ),
-                          SizedBox(height: 4),
+                          SizedBox(height: 6),
                           Container(
-                            width: screenWidth * 0.22,
+                            width: screenWidth * 0.24,
+                            height: screenHeight * 0.045,
                             child: Center(
-                              child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: UiHelper.CustomText(
-                                  text: grocerykitchen[index]["text"].toString(),
-                                  color: secondaryColor,
-                                  fontweight: FontWeight.w600,
-                                  fontsize: 11,
-                                ),
+                              child: UiHelper.CustomText(
+                                text: grocerykitchen[index]["text"].toString(),
+                                color: secondaryColor,
+                                fontweight: FontWeight.w600,
+                                fontsize: 11,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
                               ),
                             ),
                           ),
@@ -188,12 +192,14 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  UiHelper.CustomText(
-                    text: "Featured Products",
-                    color: secondaryColor,
-                    fontweight: FontWeight.bold,
-                    fontsize: 18,
-                    fontfamily: "bold",
+                  Expanded(
+                    child: UiHelper.CustomText(
+                      text: "Featured Products",
+                      color: secondaryColor,
+                      fontweight: FontWeight.bold,
+                      fontsize: 18,
+                      fontfamily: "bold",
+                    ),
                   ),
                   TextButton(
                     onPressed: () {
@@ -201,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => BottomNavScreen(
-                            initialIndex: 3, // Index for OfferScreen
+                            initialIndex: 3,
                           ),
                         ),
                       );
@@ -216,15 +222,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            SizedBox(
-              height: screenHeight * 0.32,
+            Container(
+              height: screenHeight * 0.35, // Slightly increased height
+              margin: EdgeInsets.only(bottom: 10),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 itemCount: category.length,
                 itemBuilder: (context, index) {
                   return Container(
-                    width: screenWidth * 0.35,
+                    width: screenWidth * 0.4, // Increased width for better spacing
                     margin: EdgeInsets.only(right: 15),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
@@ -243,7 +250,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ClipRRect(
                           borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
                           child: Container(
-                            height: screenHeight * 0.14,
+                            height: screenHeight * 0.15,
                             color: Colors.grey[100],
                             child: Center(
                               child: SizedBox(
@@ -255,60 +262,60 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.all(8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: screenWidth * 0.3,
-                                child: UiHelper.CustomText(
-                                  text: category[index]["text"].toString(),
-                                  color: secondaryColor,
-                                  fontweight: FontWeight.w600,
-                                  fontsize: 11,
-                                  overflow: TextOverflow.ellipsis, // Truncate text
-                                  maxLines: 2, // Limit to 2 lines
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  Icon(Icons.timer, size: 14, color: primaryColor),
-                                  SizedBox(width: 4),
-                                  UiHelper.CustomText(
-                                    text: category[index]["time"].toString(),
-                                    color: primaryColor,
-                                    fontweight: FontWeight.w500,
-                                    fontsize: 11,
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 4),
-                              UiHelper.CustomText(
-                                text: category[index]["price"].toString(),
-                                color: primaryColor,
-                                fontweight: FontWeight.bold,
-                                fontsize: 14,
-                              ),
-                              SizedBox(height: 4),
-                              Container(
-                                width: double.infinity,
-                                height: 28,
-                                decoration: BoxDecoration(
-                                  color: accentColor,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Center(
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.all(8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  width: double.infinity,
                                   child: UiHelper.CustomText(
-                                    text: "Add to Cart",
+                                    text: category[index]["text"].toString(),
                                     color: secondaryColor,
-                                    fontweight: FontWeight.bold,
-                                    fontsize: 11,
+                                    fontweight: FontWeight.w600,
+                                    fontsize: 12,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
                                   ),
                                 ),
-                              ),
-                            ],
+                                Row(
+                                  children: [
+                                    Icon(Icons.timer, size: 14, color: primaryColor),
+                                    SizedBox(width: 4),
+                                    UiHelper.CustomText(
+                                      text: category[index]["time"].toString(),
+                                      color: primaryColor,
+                                      fontweight: FontWeight.w500,
+                                      fontsize: 11,
+                                    ),
+                                  ],
+                                ),
+                                UiHelper.CustomText(
+                                  text: category[index]["price"].toString(),
+                                  color: primaryColor,
+                                  fontweight: FontWeight.bold,
+                                  fontsize: 14,
+                                ),
+                                Container(
+                                  width: double.infinity,
+                                  height: 32,
+                                  decoration: BoxDecoration(
+                                    color: accentColor,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Center(
+                                    child: UiHelper.CustomText(
+                                      text: "Add to Cart",
+                                      color: secondaryColor,
+                                      fontweight: FontWeight.bold,
+                                      fontsize: 12,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],

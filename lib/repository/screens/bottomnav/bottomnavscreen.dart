@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:skly_flash/repository/screens/cart/cartscreen.dart';
 import 'package:skly_flash/repository/screens/category/categoryscreen.dart';
+import 'package:skly_flash/repository/screens/category/category_market.dart';
 import 'package:skly_flash/repository/screens/home/homescreen.dart';
+import 'package:skly_flash/repository/screens/markat/markat_home.dart';
 import 'package:skly_flash/repository/screens/print/offerscreen.dart';
 import 'package:skly_flash/repository/screens/profile/profilescreen.dart';
+import 'package:provider/provider.dart';
+import 'package:skly_flash/repository/providers/toggle_provider.dart';
 
 class BottomNavScreen extends StatefulWidget {
   final int initialIndex;
@@ -13,6 +17,7 @@ class BottomNavScreen extends StatefulWidget {
   @override
   State<BottomNavScreen> createState() => _BottomNavScreenState();
 }
+
 class _BottomNavScreenState extends State<BottomNavScreen> {
   late int currentIndex;
 
@@ -38,47 +43,52 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   ];
 
   @override
-  late final List<Widget> pages = [
-    HomeScreen(),
-    CategoryScreen(),
-    CartScreen(),
-    OrderHistoryPage(),
-  ];
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[50],
-      body: IndexedStack(
-        index: currentIndex,
-        children: pages,
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 20,
-              offset: Offset(0, -5),
-            ),
-          ],
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.only(top: 8, bottom: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildNavItem(0, Icons.home_rounded, "Home"),
-                _buildNavItem(1, Icons.category_rounded, "Categories"),
-                _buildNavItem(2, Icons.shopping_cart_rounded, "Cart"),
-                _buildNavItem(3, Icons.list_alt_rounded, "Orders"),
+    return Consumer<ToggleProvider>(
+      builder: (context, toggleProvider, child) {
+        final List<Widget> pages = [
+          // Home page changes based on toggle state
+          toggleProvider.isSklyFlashSelected ? HomeScreen() : MarkatHome(),
+          // Categories page changes based on toggle state
+          toggleProvider.isSklyFlashSelected ? CategoryScreen() : CategoryMarket(),
+          CartScreen(),
+          OrderHistoryPage(),
+        ];
+
+        return Scaffold(
+          backgroundColor: Colors.grey[50],
+          body: IndexedStack(
+            index: currentIndex,
+            children: pages,
+          ),
+          bottomNavigationBar: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 20,
+                  offset: Offset(0, -5),
+                ),
               ],
             ),
+            child: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.only(top: 8, bottom: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildNavItem(0, Icons.home_rounded, "Home"),
+                    _buildNavItem(1, Icons.category_rounded, "Categories"),
+                    _buildNavItem(2, Icons.shopping_cart_rounded, "Cart"),
+                    _buildNavItem(3, Icons.list_alt_rounded, "Orders"),
+                  ],
+                ),
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -99,7 +109,6 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Icon with animated container background
               Container(
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
@@ -113,7 +122,6 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                 ),
               ),
               SizedBox(height: 4),
-              // Label
               Text(
                 label,
                 style: TextStyle(

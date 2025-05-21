@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skly_flash/repository/providers/profile_provider.dart';
+import 'package:skly_flash/repository/screens/bottomnav/bottomnavscreen.dart';
+import 'package:skly_flash/repository/providers/toggle_provider.dart';
 
 class AppHeader extends StatefulWidget {
   final TextEditingController searchController;
@@ -21,11 +23,10 @@ class AppHeader extends StatefulWidget {
 }
 
 class _AppHeaderState extends State<AppHeader> {
-  bool isSklyFlashSelected = true; // Toggle state
-
   @override
   Widget build(BuildContext context) {
-    final double toggleWidth = MediaQuery.of(context).size.width * 0.45; // Adjust width dynamically
+    final toggleProvider = Provider.of<ToggleProvider>(context);
+    final double toggleWidth = MediaQuery.of(context).size.width * 0.5 - 25;
 
     return Container(
       height: 220,
@@ -41,102 +42,66 @@ class _AppHeaderState extends State<AppHeader> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Toggle Bar with Highlight Box
           Stack(
             children: [
-              // Larger White Background Box
               Container(
-                height: 50, // Increased height
                 width: double.infinity,
+                height: 60,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(25), // More rounded corners
-                ),
-              ),
-              // Highlight Box with Dynamic Gradient
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-                height: 40, // Centered height
-                width: toggleWidth, // Use dynamic width
-                margin: EdgeInsets.only(
-                  left: isSklyFlashSelected ? 5 : toggleWidth + 5, // Adjust position dynamically
-                  top: 5, // Center vertically
-                ),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: isSklyFlashSelected
-                        ? [Colors.yellow, Colors.green]
-                        : [Colors.blue, Colors.purple], // Change gradient dynamically
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(
+                    color: Colors.grey.shade400,
+                    width: 2,
                   ),
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: isSklyFlashSelected
-                          ? Colors.yellow.withOpacity(0.5)
-                          : Colors.blue.withOpacity(0.5),
-                      blurRadius: 10,
-                      spreadRadius: 2,
-                      offset: Offset(0, 2),
-                    ),
-                    BoxShadow(
-                      color: isSklyFlashSelected
-                          ? Colors.green.withOpacity(0.5)
-                          : Colors.purple.withOpacity(0.5),
-                      blurRadius: 10,
-                      spreadRadius: 2,
-                      offset: Offset(0, -2),
-                    ),
-                  ],
                 ),
               ),
-              // Toggle Options
+              AnimatedPositioned(
+                duration: const Duration(milliseconds: 300),
+                left: toggleProvider.isSklyFlashSelected ? 0 : toggleWidth,
+                top: 0,
+                bottom: 0,
+                child: Container(
+                  width: toggleWidth,
+                  decoration: BoxDecoration(
+                    color: toggleProvider.isSklyFlashSelected ? Colors.grey.shade300 : Colors.green.shade200,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+              ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isSklyFlashSelected = true;
-                      });
-                    },
-                    child: Container(
-                      width: toggleWidth,
-                      height: 50, // Match the height of the white box
-                      alignment: Alignment.center, // Center the text vertically and horizontally
-                      child: AnimatedDefaultTextStyle(
-                        duration: const Duration(milliseconds: 300),
-                        style: TextStyle(
-                          color: isSklyFlashSelected ? Colors.black : Colors.grey,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22, // Larger font size
-                          fontFamily: 'Roboto', // Use a rounded font
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        toggleProvider.toggle(true);
+                      },
+                      child: SizedBox(
+                        height: 60,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            'assets/images/toggle 1.png',
+                            fit: BoxFit.contain,
+                          ),
                         ),
-                        child: Text("Flash"),
                       ),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isSklyFlashSelected = false;
-                      });
-                    },
-                    child: Container(
-                      width: toggleWidth,
-                      height: 50, // Match the height of the white box
-                      alignment: Alignment.center, // Center the text vertically and horizontally
-                      child: AnimatedDefaultTextStyle(
-                        duration: const Duration(milliseconds: 300),
-                        style: TextStyle(
-                          color: !isSklyFlashSelected ? Colors.black : Colors.grey,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22, // Larger font size
-                          fontFamily: 'Roboto', // Use a rounded font
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        toggleProvider.toggle(false);
+                      },
+                      child: SizedBox(
+                        height: 60,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Image.asset(
+                            'assets/images/toggle 2.png',
+                            fit: BoxFit.contain,
+                          ),
                         ),
-                        child: Text("Flash Market"),
                       ),
                     ),
                   ),
@@ -147,7 +112,6 @@ class _AppHeaderState extends State<AppHeader> {
 
           const SizedBox(height: 8),
 
-          // Animated Delivery Text
           AnimatedDefaultTextStyle(
             duration: const Duration(milliseconds: 300),
             style: TextStyle(
@@ -156,15 +120,12 @@ class _AppHeaderState extends State<AppHeader> {
               fontSize: 22,
             ),
             child: Text(
-              isSklyFlashSelected ? "8 minutes delivery" : "Marketplace",
+              toggleProvider.isSklyFlashSelected ? "8 minutes delivery" : "Marketplace",
             ),
           ),
 
-
-
           const SizedBox(height: 16),
 
-          // Location Row with Dropdown
           Consumer<ProfileProvider>(
             builder: (context, profileProvider, child) {
               return GestureDetector(
@@ -185,8 +146,8 @@ class _AppHeaderState extends State<AppHeader> {
                           fontWeight: FontWeight.w500,
                           fontSize: 14,
                         ),
-                        overflow: TextOverflow.ellipsis, // Truncate text with ellipsis
-                        maxLines: 1, // Limit to one line
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
                     ),
                     Icon(Icons.arrow_drop_down, color: Colors.white),
@@ -198,7 +159,6 @@ class _AppHeaderState extends State<AppHeader> {
 
           const Spacer(),
 
-          // Search Bar
           Container(
             height: 50,
             decoration: BoxDecoration(

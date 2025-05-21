@@ -5,6 +5,7 @@ import 'package:skly_flash/repository/screens/profile/profilescreen.dart';
 import 'package:skly_flash/repository/screens/bottomnav/bottomnavscreen.dart';
 import 'package:skly_flash/repository/providers/address_provider.dart';
 import 'package:skly_flash/repository/providers/profile_provider.dart';
+import 'package:skly_flash/repository/providers/toggle_provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => AddressProvider()),
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
+        ChangeNotifierProvider(create: (_) => ToggleProvider()),
       ],
       child: MaterialApp(
         title: 'Blinkit Clone',
