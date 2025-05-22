@@ -29,7 +29,6 @@ class _AppHeaderState extends State<AppHeader> {
     final double toggleWidth = MediaQuery.of(context).size.width * 0.5 - 25;
 
     return Container(
-      height: 220,
       width: double.infinity,
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -40,6 +39,7 @@ class _AppHeaderState extends State<AppHeader> {
       ),
       padding: const EdgeInsets.all(20),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Stack(
@@ -157,7 +157,7 @@ class _AppHeaderState extends State<AppHeader> {
             },
           ),
 
-          const Spacer(),
+          const SizedBox(height: 16),
 
           Container(
             height: 50,

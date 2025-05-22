@@ -16,34 +16,50 @@ class _MarkatHomeState extends State<MarkatHome> {
   final Color darkAccent = Color(0xFF006B7C);      // Dark teal
   final Color lightAccent = Color(0xFFFDD90D);     // Bright yellow
 
-  // Sample product data
-  final List<Map<String, dynamic>> featuredProducts = [
+  // Sample local shops data
+  final List<Map<String, dynamic>> localShops = [
     {
-      'name': 'Nutty Gritties Cranberries',
-      'originalPrice': 285,
-      'discountedPrice': 205,
-      'discount': 80,
-      'image': 'assets/images/cranberries.png',
-      'weight': '200 g',
-      'deliveryTime': '10 Mins'
+      'name': 'Fresh Grocery Store',
+      'rating': 4.5,
+      'distance': '0.5 km',
+      'image': 'assets/images/shop1.png',
+      'category': 'Grocery',
+      'openTime': '8:00 AM',
+      'closeTime': '10:00 PM'
     },
     {
-      'name': 'Onion (Vengayam)',
-      'originalPrice': 68,
-      'discountedPrice': 26,
-      'discount': 42,
-      'image': 'assets/images/onion.png',
-      'weight': '1 kg',
-      'deliveryTime': '10 Mins'
+      'name': 'Daily Needs Mart',
+      'rating': 4.2,
+      'distance': '0.8 km',
+      'image': 'assets/images/shop2.png',
+      'category': 'General Store',
+      'openTime': '7:00 AM',
+      'closeTime': '9:00 PM'
     },
     {
-      'name': 'Tomato Country',
-      'originalPrice': 20,
-      'discountedPrice': 8,
-      'discount': 12,
-      'image': 'assets/images/tomato.png',
-      'weight': '500 g',
-      'deliveryTime': '10 Mins'
+      'name': 'Organic Corner',
+      'rating': 4.7,
+      'distance': '1.2 km',
+      'image': 'assets/images/shop3.png',
+      'category': 'Organic Store',
+      'openTime': '9:00 AM',
+      'closeTime': '8:00 PM'
+    },
+  ];
+
+  // Sample today's offers
+  final List<Map<String, dynamic>> todaysOffers = [
+    {
+      'title': 'Weekend Special',
+      'description': 'Get 20% off on all groceries',
+      'validUntil': 'Today 11:59 PM',
+      'image': 'assets/images/offer1.png',
+    },
+    {
+      'title': 'First Order Bonus',
+      'description': 'Free delivery on first order',
+      'validUntil': 'Valid for new users',
+      'image': 'assets/images/offer2.png',
     },
   ];
 
@@ -62,56 +78,14 @@ class _MarkatHomeState extends State<MarkatHome> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Super Saver Banner
-                  Container(
-                    margin: EdgeInsets.all(16),
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [primaryColor, darkAccent],
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Super Saver',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: accentColor,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Text(
-                            'UP TO 40% OFF',
-                            style: TextStyle(
-                              color: secondaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // Products Grid
+                  // Today's Offers Section
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.all(16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Products For You',
+                          "Today's Offers",
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -119,19 +93,43 @@ class _MarkatHomeState extends State<MarkatHome> {
                           ),
                         ),
                         SizedBox(height: 16),
-                        GridView.builder(
+                        Container(
+                          height: 180,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: todaysOffers.length,
+                            itemBuilder: (context, index) {
+                              final offer = todaysOffers[index];
+                              return _buildOfferCard(offer);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Local Shops Section
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Shops Near You',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: secondaryColor,
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        ListView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 0.75,
-                            crossAxisSpacing: 16,
-                            mainAxisSpacing: 16,
-                          ),
-                          itemCount: featuredProducts.length,
+                          itemCount: localShops.length,
                           itemBuilder: (context, index) {
-                            final product = featuredProducts[index];
-                            return _buildProductCard(product);
+                            final shop = localShops[index];
+                            return _buildShopCard(shop);
                           },
                         ),
                       ],
@@ -146,8 +144,56 @@ class _MarkatHomeState extends State<MarkatHome> {
     );
   }
 
-  Widget _buildProductCard(Map<String, dynamic> product) {
+  Widget _buildOfferCard(Map<String, dynamic> offer) {
     return Container(
+      width: 280,
+      margin: EdgeInsets.only(right: 16),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [primaryColor, darkAccent],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              offer['title'],
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              offer['description'],
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.9),
+                fontSize: 14,
+              ),
+            ),
+            Text(
+              offer['validUntil'],
+              style: TextStyle(
+                color: accentColor,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildShopCard(Map<String, dynamic> shop) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -159,101 +205,88 @@ class _MarkatHomeState extends State<MarkatHome> {
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Product Image
-          Expanded(
-            flex: 3,
-            child: Container(
+      child: Padding(
+        padding: EdgeInsets.all(12),
+        child: Row(
+          children: [
+            // Shop Image
+            Container(
+              width: 80,
+              height: 80,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+                borderRadius: BorderRadius.circular(8),
                 image: DecorationImage(
-                  image: AssetImage(product['image']),
+                  image: AssetImage(shop['image']),
                   fit: BoxFit.cover,
                 ),
               ),
             ),
-          ),
-          // Product Details
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: EdgeInsets.all(8),
+            SizedBox(width: 12),
+            // Shop Details
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Product Name and Weight
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Text(
+                    shop['name'],
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Row(
                     children: [
+                      Icon(Icons.star, color: accentColor, size: 16),
+                      SizedBox(width: 4),
                       Text(
-                        product['name'],
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        product['weight'],
+                        shop['rating'].toString(),
                         style: TextStyle(
                           color: Colors.grey[600],
-                          fontSize: 12,
+                          fontSize: 14,
+                        ),
+                      ),
+                      SizedBox(width: 8),
+                      Icon(Icons.location_on, color: Colors.grey[600], size: 16),
+                      SizedBox(width: 4),
+                      Text(
+                        shop['distance'],
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 14,
                         ),
                       ),
                     ],
                   ),
-                  // Price and Add to Cart
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // Price
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '₹${product['discountedPrice']}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                          Text(
-                            '₹${product['originalPrice']}',
-                            style: TextStyle(
-                              decoration: TextDecoration.lineThrough,
-                              color: Colors.grey[600],
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                      // Add to Cart Button
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: primaryColor,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Text(
-                          'ADD',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                    ],
+                  SizedBox(height: 4),
+                  Text(
+                    '${shop['category']} • ${shop['openTime']} - ${shop['closeTime']}',
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 12,
+                    ),
                   ),
                 ],
               ),
             ),
-          ),
-        ],
+            // Visit Button
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: primaryColor,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Text(
+                'VISIT',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

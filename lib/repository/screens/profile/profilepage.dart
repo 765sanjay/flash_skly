@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skly_flash/repository/screens/orders/order_history.dart';
 // import 'package:skly_flash/repository/screens/login/loginscreen.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -148,7 +149,15 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       trailing: const Icon(Icons.chevron_right, color: Colors.grey),
       onTap: () {
-        // Implement navigation if needed
+        if (title == 'My Orders') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const OrderHistory(),
+            ),
+          );
+        }
+        // Implement other navigation options as needed
       },
     );
   }

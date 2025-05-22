@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skly_flash/repository/screens/cart/cartscreen.dart';
 import 'package:skly_flash/repository/screens/category/categoryscreen.dart';
-import 'package:skly_flash/repository/screens/category/category_market.dart';
+import 'package:skly_flash/pages/market_category_page.dart';
 import 'package:skly_flash/repository/screens/home/homescreen.dart';
 import 'package:skly_flash/repository/screens/markat/markat_home.dart';
 import 'package:skly_flash/repository/screens/print/offerscreen.dart';
@@ -50,7 +50,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
           // Home page changes based on toggle state
           toggleProvider.isSklyFlashSelected ? HomeScreen() : MarkatHome(),
           // Categories page changes based on toggle state
-          toggleProvider.isSklyFlashSelected ? CategoryScreen() : CategoryMarket(),
+          toggleProvider.isSklyFlashSelected ? CategoryScreen() : MarketCategoryPage(),
           CartScreen(),
           OrderHistoryPage(),
         ];

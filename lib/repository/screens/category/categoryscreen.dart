@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import "../category/productpage.dart";
-import 'package:skly_flash/repository/app_header.dart';
 
 class CategoryScreen extends StatefulWidget {
   @override
@@ -11,6 +10,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   TextEditingController searchController = TextEditingController();
   String selectedCategory = 'All';
   String searchQuery = '';
+  bool isSearching = false;
 
   // Color palette
   final Color primaryColor = Color(0xFF009085);       // Teal
@@ -78,8 +78,79 @@ class _CategoryScreenState extends State<CategoryScreen> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          // Header with Search Bar
-          AppHeader(searchController: searchController),
+          // Custom Header
+          Container(
+            padding: EdgeInsets.only(
+              top: MediaQuery.of(context).padding.top + 16,
+              left: 16,
+              right: 16,
+              bottom: 16,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 10,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            ),
+            child: isSearching
+                ? Container(
+                    height: 45,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: TextField(
+                      controller: searchController,
+                      autofocus: true,
+                      decoration: InputDecoration(
+                        hintText: 'Search categories...',
+                        prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(vertical: 12),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.close, color: Colors.grey[600]),
+                          onPressed: () {
+                            setState(() {
+                              isSearching = false;
+                              searchController.clear();
+                              searchQuery = '';
+                            });
+                          },
+                        ),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          searchQuery = value;
+                        });
+                      },
+                    ),
+                  )
+                : Row(
+                    children: [
+                      Text(
+                        'Categories',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: secondaryColor,
+                        ),
+                      ),
+                      Spacer(),
+                      IconButton(
+                        icon: Icon(Icons.search, color: secondaryColor),
+                        onPressed: () {
+                          setState(() {
+                            isSearching = true;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+          ),
 
           // Category Navigation Bar
           _buildCategoryNavBar(),
@@ -88,15 +159,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
           Expanded(
             child: searchQuery.isEmpty
                 ? SingleChildScrollView(
-              child: Column(
-                children: [
-                  _buildCategorySection("Grocery & Kitchen"),
-                  _buildCategorySection("Snacks & Drinks"),
-                  _buildCategorySection("Beauty & Personal Care"),
-                  _buildCategorySection("Electronics & Accessories"),
-                ],
-              ),
-            )
+                    child: Column(
+                      children: [
+                        _buildCategorySection("Grocery & Kitchen"),
+                        _buildCategorySection("Snacks & Drinks"),
+                        _buildCategorySection("Beauty & Personal Care"),
+                        _buildCategorySection("Electronics & Accessories"),
+                      ],
+                    ),
+                  )
                 : _buildSearchResults(),
           ),
         ],
