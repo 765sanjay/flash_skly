@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            AppHeader(searchController: searchController),
+            AppHeader(searchController: searchController, onSearchStateChanged: (bool ) {  },),
 
 
             // Image Section

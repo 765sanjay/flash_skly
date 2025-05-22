@@ -183,16 +183,16 @@ class _MarketProductPageState extends State<MarketProductPage> {
         final quantity = isInCart ? cartItem.quantity : 0;
 
         return Container(
-          height: 345,
+          height: 300,
           margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(8),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 6,
-                spreadRadius: 1,
+                color: Colors.black.withOpacity(0.03),
+                blurRadius: 4,
+                spreadRadius: 0,
                 offset: const Offset(0, 2),
               ),
             ],
@@ -208,11 +208,11 @@ class _MarketProductPageState extends State<MarketProductPage> {
               Stack(
                 children: [
                   Container(
-                    height: 90,
+                    height: 100,
                     width: double.infinity,
                     child: ClipRRect(
                       borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(12)),
+                          top: Radius.circular(8)),
                       child: Image.network(
                         product['image'],
                         fit: BoxFit.cover,
@@ -251,7 +251,7 @@ class _MarketProductPageState extends State<MarketProductPage> {
               // Product Details
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
+                  padding: const EdgeInsets.all(8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
@@ -271,20 +271,27 @@ class _MarketProductPageState extends State<MarketProductPage> {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(Icons.star,
-                                  color: Colors.amber, size: 14),
-                              const SizedBox(width: 2),
-                              Text(
-                                '${product['rating']}',
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: Colors.amber.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(Icons.star,
+                                    color: Colors.amber, size: 12),
+                                const SizedBox(width: 2),
+                                Text(
+                                  '${product['rating']}',
+                                  style: const TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -295,7 +302,7 @@ class _MarketProductPageState extends State<MarketProductPage> {
                       Text(
                         product['name'],
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 11,
                           fontWeight: FontWeight.w600,
                           color: ColorPalette.secondaryColor,
                           height: 1.1,
@@ -306,14 +313,15 @@ class _MarketProductPageState extends State<MarketProductPage> {
 
                       const SizedBox(height: 2),
 
-                      // Price
+                      // Price and Original Price
                       Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Flexible(
                             child: Text(
                               product['price'],
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 13,
                                 fontWeight: FontWeight.bold,
                                 color: ColorPalette.primaryColor,
                               ),
@@ -325,8 +333,8 @@ class _MarketProductPageState extends State<MarketProductPage> {
                             child: Text(
                               product['originalPrice'],
                               style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.grey,
+                                fontSize: 9,
+                                color: Colors.grey[600],
                                 decoration: TextDecoration.lineThrough,
                               ),
                               overflow: TextOverflow.ellipsis,
@@ -335,12 +343,13 @@ class _MarketProductPageState extends State<MarketProductPage> {
                         ],
                       ),
 
-                      const Spacer(), // Pushes the button to the bottom
+                      const Spacer(),
 
                       // Add to Cart or Quantity Counter
                       if (!isInCart)
                         SizedBox(
-                          height: 24,
+                          height: 28,
+                          width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
                               final price = double.parse(product['price']
@@ -376,7 +385,7 @@ class _MarketProductPageState extends State<MarketProductPage> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6),
                               ),
-                              padding: EdgeInsets.zero,
+                              elevation: 0,
                             ),
                             child: const Text(
                               'ADD',
@@ -389,7 +398,7 @@ class _MarketProductPageState extends State<MarketProductPage> {
                         )
                       else
                         Container(
-                          height: 24,
+                          height: 28,
                           decoration: BoxDecoration(
                             color: Colors.grey[100],
                             borderRadius: BorderRadius.circular(6),
@@ -398,8 +407,8 @@ class _MarketProductPageState extends State<MarketProductPage> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               SizedBox(
-                                width: 24,
-                                height: 24,
+                                width: 28,
+                                height: 28,
                                 child: IconButton(
                                   icon: Icon(Icons.remove, size: 16),
                                   color: ColorPalette.primaryColor,
@@ -423,8 +432,8 @@ class _MarketProductPageState extends State<MarketProductPage> {
                               ),
                               const SizedBox(width: 4),
                               SizedBox(
-                                width: 24,
-                                height: 24,
+                                width: 28,
+                                height: 28,
                                 child: IconButton(
                                   icon: Icon(Icons.add, size: 16),
                                   color: ColorPalette.primaryColor,
@@ -562,30 +571,7 @@ class _MarketProductPageState extends State<MarketProductPage> {
                               ],
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          Text(
-                            widget.shop['deliveryTime'] as String? ?? '15-20 min',
-                            style: TextStyle(
-                              color: ColorPalette.grey,
-                              fontSize: 12,
-                            ),
-                          ),
                         ],
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Min. Order: ${widget.shop['minOrder'] as String? ?? '₹100'}',
-                        style: TextStyle(
-                          color: ColorPalette.grey,
-                          fontSize: 12,
-                        ),
-                      ),
-                      Text(
-                        'Delivery Fee: ${widget.shop['deliveryFee'] as String? ?? '₹30'}',
-                        style: TextStyle(
-                          color: ColorPalette.grey,
-                          fontSize: 12,
-                        ),
                       ),
                     ],
                   ),
@@ -600,7 +586,7 @@ class _MarketProductPageState extends State<MarketProductPage> {
               children: [
                 // Categories List
                 Container(
-                  width: 120,
+                  width: 90,
                   color: Colors.grey[50],
                   child: ListView.builder(
                     itemCount: productCategories.length,

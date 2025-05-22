@@ -22,7 +22,7 @@ class CartScreen extends StatelessWidget {
       body: Column(
         children: [
           // Header Section
-          AppHeader(searchController: searchController),
+          AppHeader(searchController: searchController, onSearchStateChanged: (bool ) {  },),
 
           // Cart Content
           Expanded(

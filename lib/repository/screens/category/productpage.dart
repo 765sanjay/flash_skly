@@ -941,7 +941,7 @@ class _ProductsPageState extends State<ProductsPage> {
                           crossAxisCount: 2,
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 10,
-                          childAspectRatio: 0.68, // Slightly more compact
+                          childAspectRatio: 0.65, // Adjusted for better fit
                         ),
                         itemCount: _filteredProducts.length,
                         itemBuilder: (context, index) {
@@ -998,16 +998,16 @@ class _ProductsPageState extends State<ProductsPage> {
         final quantity = isInCart ? cartItem.quantity : 0;
 
         return Container(
-          height: 345, // Further increased height to fix overflow
+          height: 300,
           margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(8),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 6,
-                spreadRadius: 1,
+                color: Colors.black.withOpacity(0.03),
+                blurRadius: 4,
+                spreadRadius: 0,
                 offset: const Offset(0, 2),
               ),
             ],
@@ -1023,11 +1023,11 @@ class _ProductsPageState extends State<ProductsPage> {
               Stack(
                 children: [
                   Container(
-                    height: 90, // Further reduced image height
+                    height: 100,
                     width: double.infinity,
                     child: ClipRRect(
                       borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(12)),
+                          top: Radius.circular(8)),
                       child: Image.asset(
                         product['image'],
                         fit: BoxFit.cover,
@@ -1060,31 +1060,13 @@ class _ProductsPageState extends State<ProductsPage> {
                       ),
                     ),
                   ),
-                  // Favorite Button
-                  // Positioned(
-                  //   top: 8,
-                  //   right: 8,
-                  //   child: Container(
-                  //     width: 28,
-                  //     height: 28,
-                  //     decoration: BoxDecoration(
-                  //       color: Colors.white.withOpacity(0.9),
-                  //       shape: BoxShape.circle,
-                  //     ),
-                  //     child: IconButton(
-                  //       icon: const Icon(Icons.favorite_border, size: 16),
-                  //       padding: EdgeInsets.zero,
-                  //       onPressed: () {},
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
 
               // Product Details
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
+                  padding: const EdgeInsets.all(8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
@@ -1104,20 +1086,27 @@ class _ProductsPageState extends State<ProductsPage> {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(Icons.star,
-                                  color: Colors.amber, size: 14),
-                              const SizedBox(width: 2),
-                              Text(
-                                '${product['rating']}',
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: Colors.amber.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(Icons.star,
+                                    color: Colors.amber, size: 12),
+                                const SizedBox(width: 2),
+                                Text(
+                                  '${product['rating']}',
+                                  style: const TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -1128,7 +1117,7 @@ class _ProductsPageState extends State<ProductsPage> {
                       Text(
                         product['name'],
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 11,
                           fontWeight: FontWeight.w600,
                           color: widget.secondaryColor,
                           height: 1.1,
@@ -1139,14 +1128,15 @@ class _ProductsPageState extends State<ProductsPage> {
 
                       const SizedBox(height: 2),
 
-                      // Price
+                      // Price and Original Price
                       Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Flexible(
                             child: Text(
                               product['price'],
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 13,
                                 fontWeight: FontWeight.bold,
                                 color: widget.primaryColor,
                               ),
@@ -1158,8 +1148,8 @@ class _ProductsPageState extends State<ProductsPage> {
                             child: Text(
                               product['originalPrice'],
                               style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.grey,
+                                fontSize: 9,
+                                color: Colors.grey[600],
                                 decoration: TextDecoration.lineThrough,
                               ),
                               overflow: TextOverflow.ellipsis,
@@ -1168,12 +1158,13 @@ class _ProductsPageState extends State<ProductsPage> {
                         ],
                       ),
 
-                      const Spacer(), // Pushes the button to the bottom
+                      const Spacer(),
 
                       // Add to Cart or Quantity Counter
                       if (!isInCart)
                         SizedBox(
-                          height: 24,
+                          height: 28,
+                          width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
                               final price = double.parse(product['price']
@@ -1209,7 +1200,7 @@ class _ProductsPageState extends State<ProductsPage> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6),
                               ),
-                              padding: EdgeInsets.zero,
+                              elevation: 0,
                             ),
                             child: const Text(
                               'ADD',
@@ -1222,7 +1213,7 @@ class _ProductsPageState extends State<ProductsPage> {
                         )
                       else
                         Container(
-                          height: 24,
+                          height: 28,
                           decoration: BoxDecoration(
                             color: Colors.grey[100],
                             borderRadius: BorderRadius.circular(6),
@@ -1231,8 +1222,8 @@ class _ProductsPageState extends State<ProductsPage> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               SizedBox(
-                                width: 24,
-                                height: 24,
+                                width: 28,
+                                height: 28,
                                 child: IconButton(
                                   icon: Icon(Icons.remove, size: 16),
                                   color: widget.primaryColor,
@@ -1256,8 +1247,8 @@ class _ProductsPageState extends State<ProductsPage> {
                               ),
                               const SizedBox(width: 4),
                               SizedBox(
-                                width: 24,
-                                height: 24,
+                                width: 28,
+                                height: 28,
                                 child: IconButton(
                                   icon: Icon(Icons.add, size: 16),
                                   color: widget.primaryColor,

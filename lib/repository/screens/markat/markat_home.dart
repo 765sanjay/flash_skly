@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skly_flash/repository/app_header.dart';
+import 'package:skly_flash/pages/market_product_page.dart';
 
 class MarkatHome extends StatefulWidget {
   @override
@@ -70,7 +71,7 @@ class _MarkatHomeState extends State<MarkatHome> {
       body: Column(
         children: [
           // Using existing AppHeader
-          AppHeader(searchController: searchController),
+          AppHeader(searchController: searchController, onSearchStateChanged: (bool ) {  },),
 
           // Main content
           Expanded(
@@ -270,18 +271,37 @@ class _MarkatHomeState extends State<MarkatHome> {
               ),
             ),
             // Visit Button
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: primaryColor,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Text(
-                'VISIT',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MarketProductPage(
+                      shop: {
+                        'name': shop['name'],
+                        'image': shop['image'],
+                        'rating': shop['rating'],
+                        'deliveryTime': '15-20 min',
+                        'minOrder': '₹100',
+                        'deliveryFee': '₹30',
+                      },
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: primaryColor,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Text(
+                  'VISIT',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
                 ),
               ),
             ),

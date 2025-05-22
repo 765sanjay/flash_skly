@@ -671,27 +671,6 @@ class _MarketCategoryPageState extends State<MarketCategoryPage> {
                     ),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: ColorPalette.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.access_time, color: ColorPalette.primaryColor, size: 16),
-                      const SizedBox(width: 4),
-                      Text(
-                        '10-15 min',
-                        style: TextStyle(
-                          color: ColorPalette.primaryColor,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ],
             ),
           ),
@@ -961,53 +940,6 @@ class _MarketCategoryPageState extends State<MarketCategoryPage> {
                                                 ),
                                               ),
                                             ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.access_time,
-                                          size: 16,
-                                          color: ColorPalette.grey,
-                                        ),
-                                        const SizedBox(width: 4),
-                                        Text(
-                                          shop['deliveryTime'],
-                                          style: TextStyle(
-                                            color: ColorPalette.grey,
-                                          ),
-                                        ),
-                                        const SizedBox(width: 16),
-                                        Icon(
-                                          Icons.shopping_bag,
-                                          size: 16,
-                                          color: ColorPalette.grey,
-                                        ),
-                                        const SizedBox(width: 4),
-                                        Text(
-                                          'Min. ${shop['minOrder']}',
-                                          style: TextStyle(
-                                            color: ColorPalette.grey,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.delivery_dining,
-                                          size: 16,
-                                          color: ColorPalette.grey,
-                                        ),
-                                        const SizedBox(width: 4),
-                                        Text(
-                                          'Delivery Fee: ${shop['deliveryFee']}',
-                                          style: TextStyle(
-                                            color: ColorPalette.grey,
                                           ),
                                         ),
                                       ],
