@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   var grocerykitchen = [
-    {"img": "image 41.png", "text": "Vegetables & \nFruits", "color": Color(0xFFF6C445)},
+    {"img": "image 41.jpg", "text": "Vegetables & \nFruits", "color": Color(0xFFF6C445)},
     {"img": "image 42.png", "text": "Atta, Dal & \nRice", "color": Color(0xFF009085)},
     {"img": "image 43.png", "text": "Oil, Ghee & \nMasala", "color": Color(0xFF2F4858)},
     {"img": "image 44.png", "text": "Dairy, Bread & \nMilk", "color": Color(0xFF006B7C)},

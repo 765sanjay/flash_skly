@@ -85,15 +85,23 @@ class _AppHeaderState extends State<AppHeader> {
                   ),
                 ),
                 AnimatedPositioned(
-                  duration: const Duration(milliseconds: 300),
-                  left: toggleProvider.isSklyFlashSelected ? 0 : toggleWidth,
-                  top: 0,
-                  bottom: 0,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.elasticOut,
+                  left: toggleProvider.isSklyFlashSelected ? 3 : toggleWidth + 3,
+                  top: 8,
+                  bottom: 8,
                   child: Container(
-                    width: toggleWidth,
+                    width: toggleWidth - 6,
                     decoration: BoxDecoration(
                       color: toggleProvider.isSklyFlashSelected ? Colors.grey.shade300 : Colors.green.shade200,
-                      borderRadius: BorderRadius.circular(30),
+                      borderRadius: BorderRadius.circular(25),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 4,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -104,13 +112,26 @@ class _AppHeaderState extends State<AppHeader> {
                         onTap: () {
                           toggleProvider.toggle(true);
                         },
-                        child: SizedBox(
-                          height: 60,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Image.asset(
-                              'assets/images/toggle 1.png',
-                              fit: BoxFit.contain,
+                        child: AnimatedSlide(
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.easeInOut,
+                          offset: Offset(toggleProvider.isSklyFlashSelected ? 0 : -0.1, 0),
+                          child: AnimatedOpacity(
+                            duration: const Duration(milliseconds: 200),
+                            opacity: toggleProvider.isSklyFlashSelected ? 1.0 : 0.7,
+                            child: AnimatedScale(
+                              duration: const Duration(milliseconds: 200),
+                              scale: toggleProvider.isSklyFlashSelected ? 1.1 : 1.0,
+                              child: SizedBox(
+                                height: 60,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Image.asset(
+                                    'assets/images/toggle 1.png',
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -121,13 +142,23 @@ class _AppHeaderState extends State<AppHeader> {
                         onTap: () {
                           toggleProvider.toggle(false);
                         },
-                        child: SizedBox(
-                          height: 60,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Image.asset(
-                              'assets/images/toggle 2.png',
-                              fit: BoxFit.contain,
+                        child: AnimatedSlide(
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.easeInOut,
+                          offset: Offset(toggleProvider.isSklyFlashSelected ? 0.1 : 0, 0),
+                          child: AnimatedOpacity(
+                            duration: const Duration(milliseconds: 200),
+                            opacity: !toggleProvider.isSklyFlashSelected ? 1.0 : 0.7,
+                            child: AnimatedScale(
+                              duration: const Duration(milliseconds: 200),
+                              scale: !toggleProvider.isSklyFlashSelected ? 1.1 : 1.0,
+                              child: SizedBox(
+                                height: 55,
+                                child: Image.asset(
+                                  'assets/images/toggle 2.png',
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
                             ),
                           ),
                         ),
