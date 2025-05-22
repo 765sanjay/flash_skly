@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:skly_flash/repository/screens/cart/cartscreen.dart';
 import 'package:skly_flash/repository/screens/category/categoryscreen.dart';
 import 'package:skly_flash/repository/screens/home/homescreen.dart';
+import 'package:skly_flash/pages/market_category_page.dart';
 
 class BottomNavScreen extends StatefulWidget {
   final int initialIndex;
@@ -32,12 +33,14 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     primaryColor,    // Home
     accentColor,     // Cart
     darkAccent,      // Categories
+    secondaryColor,  // Market
   ];
 
   late final List<Widget> pages = [
     HomeScreen(),
     CartScreen(),
     CategoryScreen(),
+    MarketCategoryPage(),
   ];
 
   @override
@@ -68,6 +71,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                 _buildNavItem(0, Icons.home_rounded, "Home"),
                 _buildNavItem(1, Icons.shopping_cart_rounded, "Cart"),
                 _buildNavItem(2, Icons.category_rounded, "Categories"),
+                _buildNavItem(3, Icons.store_rounded, "Market"),
               ],
             ),
           ),
